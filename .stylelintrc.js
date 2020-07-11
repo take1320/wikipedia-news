@@ -5,7 +5,7 @@ module.exports = {
     'stylelint-prettier/recommended',
   ],
   rules: {
-    'string-quotes': 'double',
+    'string-quotes': 'single',
     'order/properties-alphabetical-order': true, //ABC順に並べる
   },
 };
