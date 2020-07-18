@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 import parse from 'csv-parse/lib/sync';
 
-import { NewsArticle } from '../services/w-news/models/news-articles';
+import { Article } from '../services/w-news/models/articles';
 import { collectionName } from '../services/w-news/constants';
 import { addCounter } from '../firestore-admin/record-counter';
 
@@ -24,9 +24,9 @@ const uploadSeed = async (collection: string, seedFile: string) => {
   });
   const ref = db.collection(collection);
   switch (collection) {
-    case collectionName.newsArticles: {
-      const docs: Required<NewsArticle>[] =
-        records.map((record: NewsArticle) => ({
+    case collectionName.articles: {
+      const docs: Required<Article>[] =
+        records.map((record: Article) => ({
           ...record,
           createdAt: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),

@@ -1,4 +1,4 @@
 export const collectionName = {
-  newsArticles: 'newsArticles',
+  articles: 'articles',
   docCounters: 'docCounters',
 } as const;

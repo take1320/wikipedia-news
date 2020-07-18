@@ -1,7 +1,7 @@
 {
   "name": "functions",
   "scripts": {
-    "dbseed:news-articles": "node lib/commands/dbseed.js newsArticles seeds/news-articles.tsv",
+    "dbseed:articles": "node lib/commands/dbseed.js articles seeds/articles.tsv",
     "build": "npm run lint && tsc",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",

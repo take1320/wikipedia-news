@@ -1,6 +1,6 @@
 import { firestore } from 'firebase/app';
 
-export type NewsArticle = {
+export type Article = {
   id?: string;
   title: string;
   url: string;
