@@ -35,8 +35,9 @@ const uploadSeed = async (collection: string, seedFile: string) => {
       console.log(docs);
 
       for await (const doc of docs) {
-        const { id, ...docWithoutId } = doc;
-        await ref.doc(id).set(docWithoutId);
+        const { ...docWithoutId } = doc;
+        // MEMO: doc()関数の引数にIDを渡さない場合、自動セットされる
+        await ref.doc().set(docWithoutId);
       }
       await addCounter(db, collection, docs.length);
 
