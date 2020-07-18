@@ -19,7 +19,6 @@
     "jsx": "react",
     "baseUrl": "src",
     "incremental": true,
-    "noEmit": true
   },
   "include": [
     "src"
