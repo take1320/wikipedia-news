@@ -13,4 +13,6 @@
     "typescript",
     "typescriptreact"
   ],
+  "javascript.format.enable": false,
+  "stylelint.autoFixOnSave": true,
 }
