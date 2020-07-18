@@ -1,18 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import firebase from 'firebase';
 
 import './index.css';
 import App from './App';
 import { HogeContext } from 'contexts';
 import * as serviceWorker from './serviceWorker';
+import firebaseConfig from './firebase-config';
+import FirebaseApp from 'FirebaseApp';
+
+firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <HogeContext.Provider value="piyo">
-        <App />
-      </HogeContext.Provider>
+      <FirebaseApp>
+        <HogeContext.Provider value="piyo">
+          <App />
+        </HogeContext.Provider>
+      </FirebaseApp>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),

@@ -25,6 +25,9 @@ module.exports = {
 
     // prettier
     'prettier/prettier': 'error', //ESLintでPrettierの規則もエラーとして検出する設定
+
+    // react
+    'react/prop-types': 'off'
   },
   settings: {
     react: {
