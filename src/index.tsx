@@ -4,12 +4,15 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
+import { HogeContext } from 'contexts';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <HogeContext.Provider value="piyo">
+        <App />
+      </HogeContext.Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),
