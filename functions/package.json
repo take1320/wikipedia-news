@@ -1,6 +1,8 @@
 {
   "name": "functions",
   "scripts": {
+    "dbreset": "firebase firestore:delete --all-collections",
+    "dbreset:publishers": "firebase firestore:delete -y --shallow publishers",
     "dbseed:articles": "node lib/commands/dbseed.js articles seeds/articles.tsv",
     "build": "npm run lint && tsc",
     "serve": "npm run build && firebase emulators:start --only functions",
