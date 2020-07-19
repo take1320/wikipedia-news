@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { FC } from 'react';
+import { Switch, Route, Redirect } from 'react-router';
+import paths from 'paths';
+import Home from 'containers/Home/Articles';
+import Fuga from 'components/Fuga';
 
-function App(): JSX.Element {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: FC = () => (
+  <div>
+    <Switch>
+      <Route path={paths.home} component={Home} exact />
+      <Route path={paths.fuga} component={Fuga} exact />
+      <Redirect to={paths.home} />
+    </Switch>
+  </div>
+);
 
 export default App;
