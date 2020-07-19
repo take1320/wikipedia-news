@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 import paths from 'paths';
-import Home from 'components/Home';
+import Home from 'containers/Home/Articles';
 import Fuga from 'components/Fuga';
 
 const App: FC = () => (

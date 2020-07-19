@@ -14,20 +14,20 @@ module.exports = {
     'prettier/@typescript-eslint',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-    'prettier',
-    'react'
-  ],
+  plugins: ['@typescript-eslint', 'prettier', 'react'],
   rules: {
     // eslint official
     quotes: ['error', 'single'],
+
+    // @typescript-eslint
+    // '@typescript-eslint/explicit-function-return-type': 'off', // すべての関数の戻り値型を明記
+    '@typescript-eslint/explicit-module-boundary-types': 'off', // エクスポート関数の戻り値型を明記
 
     // prettier
     'prettier/prettier': 'error', //ESLintでPrettierの規則もエラーとして検出する設定
 
     // react
-    'react/prop-types': 'off'
+    'react/prop-types': 'off',
   },
   settings: {
     react: {
