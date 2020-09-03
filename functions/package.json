@@ -5,7 +5,7 @@
     "dbreset:publishers": "firebase firestore:delete -y --shallow publishers",
     "dbseed:articles": "node lib/commands/dbseed.js articles seeds/articles.tsv",
     "build": "npm run lint && tsc",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=./src/wikipedia-news-firebase-adminsdk.json firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",

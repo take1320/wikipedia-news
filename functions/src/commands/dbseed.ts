@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 import parse from 'csv-parse/lib/sync';
 
-import { Article } from '../services/w-news/models/articles';
+import { Article } from '../services/w-news/models/article';
 import { collectionName } from '../services/w-news/constants';
 import { addCounter } from '../firestore-admin/record-counter';
 

@@ -1,8 +1,8 @@
-import { firestore } from 'firebase/app';
+import { firestore } from 'firebase-admin';
 
-export type Article = {
+export type Publisher = {
   id?: string;
-  title: string;
+  name: string;
   url: string;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
