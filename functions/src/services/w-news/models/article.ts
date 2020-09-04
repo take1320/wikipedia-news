@@ -6,6 +6,7 @@ export type Article = {
   title: string;
   url: string;
   publisher: firestore.DocumentReference<Publisher>;
+  hasDetail: boolean;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
 };

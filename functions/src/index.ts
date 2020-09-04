@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import { saveArticles } from './firestore-admin/article';
+import { saveArticles, fetchNoDetailArticles } from './firestore-admin/article';
 import { savePublishers } from './firestore-admin/publisher';
 import { addCounter } from './firestore-admin/record-counter';
 import { collectionName } from './services/w-news/constants';
@@ -48,4 +48,12 @@ export const articles = functions
       .get();
     const data = snap.docs.map((doc) => doc.data());
     res.send({ data });
+  });
+
+export const test = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    const articles = await fetchNoDetailArticles(admin.firestore());
+
+    res.send({ articles });
   });

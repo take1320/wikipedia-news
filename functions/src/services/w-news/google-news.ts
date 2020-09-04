@@ -14,6 +14,7 @@ export const toArticle = (
     title: gNArticle.title,
     url: gNArticle.link,
     publisher: publisherRef,
+    hasDetail: false,
     createdAt: null,
     updatedAt: null,
   };

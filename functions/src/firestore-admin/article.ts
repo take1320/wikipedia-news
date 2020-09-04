@@ -14,12 +14,30 @@ export const saveArticles = async (
     await articlesRef.doc().set({
       ...article,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.Timestamp.fromDate(new Date(0)),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
-    // MEMO: FieldValue と Timestampの違いは何？
 
     count += 1;
   }
 
   return count;
+};
+
+export const fetchEmptyDetailArticles = async (
+  db: admin.firestore.Firestore,
+): Promise<Article[]> => {
+  const snap = await db
+    .collection(collectionName.articles)
+    .where('hasDetail', '==', false)
+    .limit(2)
+    .get();
+
+  const articles: Article[] = [];
+  snap.forEach((doc) => {
+    articles.push(doc.data() as Article);
+  });
+
+  console.log('articles.length:' + articles.length);
+
+  return articles;
 };
