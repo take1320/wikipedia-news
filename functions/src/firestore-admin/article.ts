@@ -2,6 +2,7 @@ import admin from 'firebase-admin';
 
 import { collectionName } from '../services/w-news/constants';
 import { Article } from '../services/w-news/models/article';
+import { Publisher } from '../services/w-news/models/publisher';
 
 export const saveArticles = async (
   db: admin.firestore.Firestore,
@@ -29,7 +30,7 @@ export const fetchEmptyDetailArticles = async (
   const snap = await db
     .collection(collectionName.articles)
     .where('hasDetail', '==', false)
-    .limit(2)
+    .limit(3)
     .get();
 
   const articles: Article[] = [];
@@ -40,4 +41,15 @@ export const fetchEmptyDetailArticles = async (
   console.log('articles.length:' + articles.length);
 
   return articles;
+};
+
+export const hasPublisherSelector = async (
+  db: admin.firestore.Firestore,
+  article: Article,
+): Promise<boolean> => {
+  const publisher: Publisher = (
+    await article.publisher.get()
+  ).data() as Publisher;
+
+  return publisher.selector !== null && publisher.selector !== '';
 };

@@ -1,7 +1,11 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
-
-import { saveArticles, fetchNoDetailArticles } from './firestore-admin/article';
+import puppeteer from 'puppeteer';
+import {
+  saveArticles,
+  fetchEmptyDetailArticles,
+} from './firestore-admin/article';
+import { saveArticleDetails } from './firestore-admin/articleDetail';
 import { savePublishers } from './firestore-admin/publisher';
 import { addCounter } from './firestore-admin/record-counter';
 import { collectionName } from './services/w-news/constants';
@@ -9,8 +13,25 @@ import { fetchTopHeadLines } from './services/rakuten-rapid-api/google-news-api'
 import { Article } from './services/w-news/models/article';
 import { Publisher } from './services/w-news/models/publisher';
 import { toPublishers, toArticles } from './services/w-news/google-news';
+import {
+  crawlArticleDetail,
+  extractCrawlableArticles,
+} from './crawlers/article';
 
 admin.initializeApp();
+
+const PUPPETEER_OPTIONS = {
+  args: [
+    '--disable-gpu',
+    '-–disable-dev-shm-usage',
+    '--disable-setuid-sandbox',
+    '--no-first-run',
+    '--no-sandbox',
+    '--no-zygote',
+    '--single-process',
+  ],
+  headless: true,
+};
 
 export const publishers = functions
   .region('asia-northeast1')
@@ -51,9 +72,37 @@ export const articles = functions
   });
 
 export const test = functions
-  .region('asia-northeast1')
+  .region(functions.config().locale.region)
+  .runWith({
+    timeoutSeconds: 300,
+    memory: '2GB',
+  })
   .https.onRequest(async (req, res) => {
-    const articles = await fetchNoDetailArticles(admin.firestore());
+    const db = admin.firestore();
 
-    res.send({ articles });
+    const articles = await fetchEmptyDetailArticles(db);
+
+    // const publishers = await Promise.all(
+    //   articles.map((article) => article.publisher.get()),
+    // );
+
+    const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
+    const page = await browser.newPage();
+
+    // クローリング可能な記事の絞り込み
+    const crawlableArticles = await extractCrawlableArticles(db, articles);
+
+    // ニュース記事を取得する
+    const articleDetails = [];
+    for await (const crawlableArticle of crawlableArticles) {
+      articleDetails.push(await crawlArticleDetail(page, crawlableArticle));
+    }
+    const articleDetailsCount = await saveArticleDetails(db, articleDetails);
+    await addCounter(db, collectionName.articleDetails, articleDetailsCount);
+
+    // 単語分割
+
+    // wikipedia問い合わせ
+
+    res.send('hoge');
   });

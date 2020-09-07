@@ -29,6 +29,7 @@ export const toArticles = (
 export const toPublisher = (gNArticle: GNArticle): Publisher => ({
   name: gNArticle.source.title,
   url: gNArticle.source.href,
+  selector: null,
   createdAt: null,
   updatedAt: null,
 });
