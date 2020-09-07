@@ -82,10 +82,6 @@ export const test = functions
 
     const articles = await fetchEmptyDetailArticles(db);
 
-    // const publishers = await Promise.all(
-    //   articles.map((article) => article.publisher.get()),
-    // );
-
     const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
     const page = await browser.newPage();
 
