@@ -3,10 +3,10 @@ import { collectionName } from '../services/w-news/constants';
 
 export const addCounter = async (
   db: admin.firestore.Firestore,
-  colName: string,
+  collName: string,
   count = 1,
 ): Promise<void> => {
-  const doc = db.collection(collectionName.docCounters).doc(colName);
+  const doc = db.collection(collectionName.docCounters).doc(collName);
   await doc.set(
     {
       count: admin.firestore.FieldValue.increment(count),
@@ -14,4 +14,13 @@ export const addCounter = async (
     },
     { merge: true },
   );
+};
+
+export const findDocCountersRef = (
+  db: admin.firestore.Firestore,
+  collName: string,
+): admin.firestore.DocumentReference => {
+  return db
+    .collection(collectionName.docCounters)
+    .doc(collName) as admin.firestore.DocumentReference;
 };

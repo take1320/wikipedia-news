@@ -1,9 +1,10 @@
-import { firestore } from 'firebase/app';
+import { firestore } from 'firebase-admin';
 
-export type Article = {
+export type Publisher = {
   id?: string;
-  title: string;
+  name: string;
   url: string;
+  selector: string | null;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
 };
