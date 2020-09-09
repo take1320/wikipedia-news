@@ -4,6 +4,7 @@ import fs from 'fs';
 import parse from 'csv-parse/lib/sync';
 
 import { Article } from '../services/w-news/models/article';
+import { Publisher } from '../services/w-news/models/publisher';
 import { collectionName } from '../services/w-news/constants';
 import { addCounter } from '../firestore-admin/record-counter';
 
@@ -38,6 +39,24 @@ const uploadSeed = async (collection: string, seedFile: string) => {
         const { ...docWithoutId } = doc;
         // MEMO: doc()関数の引数にIDを渡さない場合、自動セットされる
         await ref.doc().set(docWithoutId);
+      }
+      await addCounter(db, collection, docs.length);
+
+      return;
+    }
+
+    case collectionName.publishers: {
+      const docs: Required<Publisher>[] =
+        records.map((record: Publisher) => ({
+          ...record,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        })) || [];
+
+      console.log(docs);
+
+      for await (const doc of docs) {
+        await ref.doc(doc.name).set(doc);
       }
       await addCounter(db, collection, docs.length);
 

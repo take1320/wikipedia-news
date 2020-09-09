@@ -30,7 +30,7 @@ export const fetchEmptyDetailArticles = async (
   const snap = await db
     .collection(collectionName.articles)
     .where('hasDetail', '==', false)
-    .limit(3)
+    .limit(30)
     .get();
 
   const articles: Article[] = [];
@@ -51,5 +51,13 @@ export const hasPublisherSelector = async (
     await article.publisher.get()
   ).data() as Publisher;
 
-  return publisher.selector !== null && publisher.selector !== '';
+  const hasSelector = publisher.selector !== null && publisher.selector !== '';
+
+  console.log(
+    `article.title:${article.title}, publisher.name:${
+      publisher.name
+    },hasSelector:${hasSelector ? 'true' : 'false'}`,
+  );
+
+  return hasSelector;
 };

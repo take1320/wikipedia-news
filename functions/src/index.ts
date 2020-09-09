@@ -96,6 +96,8 @@ export const test = functions
     const articleDetailsCount = await saveArticleDetails(db, articleDetails);
     await addCounter(db, collectionName.articleDetails, articleDetailsCount);
 
+    // hasDetailをtrueに更新する
+
     // 単語分割
 
     // wikipedia問い合わせ

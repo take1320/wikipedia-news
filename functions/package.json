@@ -3,7 +3,10 @@
   "scripts": {
     "dbreset": "firebase firestore:delete --all-collections",
     "dbreset:publishers": "firebase firestore:delete -y --shallow publishers",
-    "dbseed:articles": "node lib/commands/dbseed.js articles seeds/articles.tsv",
+    "dbseed:articles": "node lib/commands/db-seed.js articles seeds/articles.tsv",
+    "dbseed:publishers": "node lib/commands/db-seed.js publishers seeds/publishers.tsv",
+    "dbexport:publishers": "node lib/commands/db-export.js publishers",
+    "dbexport:articles": "node lib/commands/db-export.js articles",
     "build": "npm run lint && tsc",
     "serve": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=./src/wikipedia-news-firebase-adminsdk.json firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
