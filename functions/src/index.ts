@@ -5,7 +5,7 @@ import {
   saveArticles,
   fetchEmptyDetailArticles,
 } from './firestore-admin/article';
-import { saveArticleDetails } from './firestore-admin/articleDetail';
+import { saveArticleDetails } from './firestore-admin/article-detail';
 import { savePublishers } from './firestore-admin/publisher';
 import { addCounter } from './firestore-admin/record-counter';
 import { collectionName } from './services/w-news/constants';
@@ -95,6 +95,8 @@ export const test = functions
     }
     const articleDetailsCount = await saveArticleDetails(db, articleDetails);
     await addCounter(db, collectionName.articleDetails, articleDetailsCount);
+
+    // hasDetailをtrueに更新する
 
     // 単語分割
 

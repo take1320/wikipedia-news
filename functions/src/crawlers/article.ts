@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 
 import { Article } from '../services/w-news/models/article';
 import { Publisher } from '../services/w-news/models/publisher';
-import { ArticleDetail } from '../services/w-news/models/articleDetail';
+import { ArticleDetail } from '../services/w-news/models/article-detail';
 import { hasPublisherSelector } from '../firestore-admin/article';
 
 export const crawlArticleDetail = async (
