@@ -14,5 +14,5 @@ firebase-debug.log
 # Firebase config
 .runtimeconfig.json
 
-# firestore export files
-seeds/exports/*
+# firestore seed files
+seeds/
