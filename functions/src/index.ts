@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 import puppeteer from 'puppeteer';
+
 import {
   saveArticles,
   fetchEmptyDetailArticles,
@@ -17,6 +18,7 @@ import {
   crawlArticleDetail,
   extractCrawlableArticles,
 } from './crawlers/article';
+import { torknize, extractNoun } from './services/w-news/kuromoji';
 
 admin.initializeApp();
 
@@ -103,4 +105,15 @@ export const test = functions
     // wikipedia問い合わせ
 
     res.send('hoge');
+  });
+
+export const kuromoji = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    const text =
+      'テストテキスト。私はGitHubにとても感謝しています。と記入すると、GitHubという名詞が取得できる。';
+
+    const nounWords = extractNoun(await torknize(text));
+
+    res.send({ nounWords });
   });
