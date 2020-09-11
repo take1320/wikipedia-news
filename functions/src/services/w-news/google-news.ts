@@ -11,6 +11,7 @@ export const toArticle = (
   const publisherRef = findPublisherRef(db, gNArticle.source.title);
   if (!publisherRef) throw new Error('publisher not found');
   return {
+    id: gNArticle.id,
     title: gNArticle.title,
     url: gNArticle.link,
     publisher: publisherRef,

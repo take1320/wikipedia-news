@@ -12,7 +12,7 @@ export const saveArticles = async (
   let count = 0;
 
   for await (const article of articles) {
-    await articlesRef.doc().set({
+    await articlesRef.doc(article.id).set({
       ...article,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
