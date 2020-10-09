@@ -4,10 +4,14 @@ import admin from 'firebase-admin';
 import { Article } from '../services/w-news/models/article';
 import { Publisher } from '../services/w-news/models/publisher';
 import { ArticleDetail } from '../services/w-news/models/article-detail';
-import { hasPublisherSelector } from '../firestore-admin/article';
+import {
+  hasPublisherSelector,
+  findArticleRef,
+} from '../firestore-admin/article';
 
 export const crawlArticleDetail = async (
   page: puppeteer.Page,
+  db: admin.firestore.Firestore,
   article: Article,
 ): Promise<ArticleDetail> => {
   console.log('article:' + article.title);
@@ -51,12 +55,16 @@ export const crawlArticleDetail = async (
     return removeDoubleReturn;
   };
 
+  const articleRef = findArticleRef(db, article.id);
+
   const articleDetail: ArticleDetail = {
     title: article.title,
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
     url: url,
+    article: articleRef,
     publisher: article.publisher,
+    wordExtracted: false,
     createdAt: null,
     updatedAt: null,
   };

@@ -30,6 +30,7 @@ export const fetchEmptyDetailArticles = async (
   const snap = await db
     .collection(collectionName.articles)
     .where('hasDetail', '==', false)
+    .orderBy('createdAt', 'desc')
     .limit(30)
     .get();
 
@@ -60,4 +61,13 @@ export const hasPublisherSelector = async (
   );
 
   return hasSelector;
+};
+
+export const findArticleRef = (
+  db: admin.firestore.Firestore,
+  id: string,
+): admin.firestore.DocumentReference<Article> => {
+  return db
+    .collection(collectionName.articles)
+    .doc(id) as admin.firestore.DocumentReference<Article>;
 };

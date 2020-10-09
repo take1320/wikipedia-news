@@ -11,8 +11,11 @@ export const saveArticleDetails = async (
   let count = 0;
 
   for await (const articleDetail of articleDetails) {
-    await articleDetailsRef.doc().set({
+    const id = articleDetailsRef.doc().id;
+
+    await articleDetailsRef.doc(id).set({
       ...articleDetail,
+      id: id,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
@@ -21,4 +24,24 @@ export const saveArticleDetails = async (
   }
 
   return count;
+};
+
+export const fetchEmptyWordsArticleDetails = async (
+  db: admin.firestore.Firestore,
+): Promise<ArticleDetail[]> => {
+  const snap = await db
+    .collection(collectionName.articleDetails)
+    .where('wordExtracted', '==', false)
+    .orderBy('createdAt', 'desc')
+    .limit(30)
+    .get();
+
+  const articleDetails: ArticleDetail[] = [];
+  snap.forEach((doc) => {
+    articleDetails.push(doc.data() as ArticleDetail);
+  });
+
+  console.log('articleDetails.length:' + articleDetails.length);
+
+  return articleDetails;
 };
