@@ -11,7 +11,7 @@ export const saveArticleDetails = async (
   let count = 0;
 
   for await (const articleDetail of articleDetails) {
-    const id = articleDetailsRef.doc().id;
+    const id = articleDetail.id ?? articleDetailsRef.doc().id;
 
     await articleDetailsRef.doc(id).set({
       ...articleDetail,
@@ -29,6 +29,8 @@ export const saveArticleDetails = async (
 export const fetchEmptyWordsArticleDetails = async (
   db: admin.firestore.Firestore,
 ): Promise<ArticleDetail[]> => {
+  console.log('--- *** start fetchEmptyWordsArticleDetails');
+
   const snap = await db
     .collection(collectionName.articleDetails)
     .where('wordExtracted', '==', false)
@@ -43,6 +45,7 @@ export const fetchEmptyWordsArticleDetails = async (
 
   console.log('articleDetails.length:' + articleDetails.length);
 
+  console.log('--- *** end fetchEmptyWordsArticleDetails');
   return articleDetails;
 };
 

@@ -41,7 +41,7 @@ const PUPPETEER_OPTIONS = {
   headless: true,
 };
 
-export const publishers = functions
+export const fetchHeadLines = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     const db = admin.firestore();
@@ -68,7 +68,7 @@ export const publishers = functions
     res.send('ok');
   });
 
-export const articles = functions
+export const getArticles = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
     const snap = await admin
@@ -79,7 +79,7 @@ export const articles = functions
     res.send({ data });
   });
 
-export const test = functions
+export const crawlArticles = functions
   .region(functions.config().locale.region)
   .runWith({
     timeoutSeconds: 300,
@@ -115,25 +115,31 @@ export const test = functions
 
     await saveArticles(db, hasDetailArticles);
 
+    res.send('hoge');
+  });
+
+export const articleExtractWords = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    console.log('--- strat articleExtractWords');
+
+    const db = admin.firestore();
+
     // 単語分割
     const emptyWordsArticleDetails = await fetchEmptyWordsArticleDetails(db);
 
-    console.log('単語分割 start');
-    console.log('emptyWordsArticleDetails' + emptyWordsArticleDetails.length);
     for await (const detail of emptyWordsArticleDetails) {
-      console.log('detail.title' + detail.title);
+      console.log('--- --- detail.title: ' + detail.title);
       const words = await extractWords(detail);
       await saveArticleWords(db, detail, words);
+      await saveArticleDetails(db, [
+        {
+          ...detail,
+          wordExtracted: true,
+        },
+      ]);
       await sleep();
     }
-    // 単語抽出済みに更新
-    await saveArticleDetails(
-      db,
-      emptyWordsArticleDetails.map((detail) => ({
-        ...detail,
-        wordExtracted: true,
-      })),
-    );
 
     // 単語を登録する
     // wikipedia単語に登録されているかチェックする
@@ -143,6 +149,7 @@ export const test = functions
     // wikipedia問い合わせ
 
     res.send('hoge');
+    console.log('--- end articleExtractWords');
   });
 
 export const kuromoji = functions
