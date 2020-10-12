@@ -9,6 +9,7 @@ import {
 import {
   saveArticleDetails,
   fetchEmptyWordsArticleDetails,
+  fetchArticleDetails,
 } from './firestore-admin/article-detail';
 import { savePublishers } from './firestore-admin/publisher';
 import { saveArticleWords } from './firestore-admin/article-word';
@@ -23,7 +24,6 @@ import {
   crawlArticleDetail,
   extractCrawlableArticles,
 } from './crawlers/article';
-import { torknize, extractNoun } from './services/w-news/kuromoji';
 import { extractWords } from './services/w-news/article';
 
 admin.initializeApp();
@@ -117,10 +117,23 @@ export const test = functions
 
     // 単語分割
     const emptyWordsArticleDetails = await fetchEmptyWordsArticleDetails(db);
+
+    console.log('単語分割 start');
+    console.log('emptyWordsArticleDetails' + emptyWordsArticleDetails.length);
     for await (const detail of emptyWordsArticleDetails) {
+      console.log('detail.title' + detail.title);
       const words = await extractWords(detail);
       await saveArticleWords(db, detail, words);
+      await sleep();
     }
+    // 単語抽出済みに更新
+    await saveArticleDetails(
+      db,
+      emptyWordsArticleDetails.map((detail) => ({
+        ...detail,
+        wordExtracted: true,
+      })),
+    );
 
     // 単語を登録する
     // wikipedia単語に登録されているかチェックする
@@ -135,10 +148,34 @@ export const test = functions
 export const kuromoji = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    const text =
-      'テストテキスト。私はGitHubにとても感謝しています。と記入すると、GitHubという名詞が取得できる。';
+    const db = admin.firestore();
+    const id = '3dUDCuYnGnKkpg7h3f3D';
 
-    const nounWords = extractNoun(await torknize(text));
+    // 単語分割
+    const articleDetails = await fetchArticleDetails(db, id);
+    console.log('fetchArticleDetails:' + articleDetails.length);
 
-    res.send({ nounWords });
+    for await (const detail of articleDetails) {
+      const words = await extractWords(detail);
+      await saveArticleWords(db, detail, words);
+    }
+    // 単語抽出済みに更新
+    await saveArticleDetails(
+      db,
+      articleDetails.map((detail) => ({
+        ...detail,
+        wordExtracted: true,
+      })),
+    );
+
+    console.log('start');
+    console.log(new Date());
+    await sleep(2000);
+
+    console.log('end');
+    console.log(new Date());
+
+    res.send('fuga');
   });
+
+const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));

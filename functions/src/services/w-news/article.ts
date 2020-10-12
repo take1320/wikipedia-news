@@ -6,6 +6,8 @@ import { torknize, extractNoun } from '../../services/w-news/kuromoji';
 export const extractWords = async (
   articleDetail: ArticleDetail,
 ): Promise<ArticleWord[]> => {
+  console.log('extractWords detail.title' + articleDetail.title);
+
   return extractNoun(await torknize(articleDetail.text)).map(
     (nown) =>
       ({

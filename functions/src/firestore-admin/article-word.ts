@@ -11,6 +11,9 @@ export const saveArticleWords = async (
 ): Promise<number> => {
   if (!articleDetail.id) throw new Error('articleDetail.id is null');
 
+  console.log('saveArticleWords detail' + articleDetail.title);
+  console.log('saveArticleWords words' + articleWords.length);
+
   const articleWordsRef = db
     .collection(collectionName.articleDetails)
     .doc(articleDetail.id)

@@ -45,3 +45,23 @@ export const fetchEmptyWordsArticleDetails = async (
 
   return articleDetails;
 };
+
+export const fetchArticleDetails = async (
+  db: admin.firestore.Firestore,
+  id: string,
+): Promise<ArticleDetail[]> => {
+  const snap = await db
+    .collection(collectionName.articleDetails)
+    .where('id', '==', id)
+    .limit(30)
+    .get();
+
+  const articleDetails: ArticleDetail[] = [];
+  snap.forEach((doc) => {
+    articleDetails.push(doc.data() as ArticleDetail);
+  });
+
+  console.log('articleDetails.length:' + articleDetails.length);
+
+  return articleDetails;
+};
