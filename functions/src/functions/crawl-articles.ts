@@ -9,8 +9,8 @@ import {
 import { saveArticleDetails } from '../firestore-admin/article-detail';
 
 import { addCounter } from '../firestore-admin/record-counter';
-import { collectionName } from '../services/w-news/constants';
-import { Article } from '../services/w-news/models/article';
+import { collectionName } from '../services/wikipedia-news/constants';
+import { Article } from '../services/wikipedia-news/models/article';
 import {
   crawlArticleDetail,
   extractCrawlableArticles,

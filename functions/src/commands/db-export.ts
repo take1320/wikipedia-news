@@ -3,9 +3,9 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 import stringifySync from 'csv-stringify/lib/sync';
 
-import { Publisher } from '../services/w-news/models/publisher';
-import { Article } from '../services/w-news/models/article';
-import { collectionName } from '../services/w-news/constants';
+import { Publisher } from '../services/wikipedia-news/models/publisher';
+import { Article } from '../services/wikipedia-news/models/article';
+import { collectionName } from '../services/wikipedia-news/constants';
 
 import serviceAccount from '../wikipedia-news-firebase-adminsdk.json';
 

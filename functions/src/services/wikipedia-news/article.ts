@@ -1,7 +1,7 @@
 import { firestore } from 'firebase-admin';
-import { ArticleDetail } from '../w-news/models/article-detail';
-import { ArticleWord } from '../w-news/models/article-word';
-import { torknize, extractNoun } from '../../services/w-news/kuromoji';
+import { ArticleDetail } from './models/article-detail';
+import { ArticleWord } from './models/article-word';
+import { torknize, extractNoun } from './kuromoji';
 
 export const extractWords = async (
   articleDetail: ArticleDetail,

@@ -6,7 +6,7 @@ import {
   fetchNotSearchedWord,
 } from '../firestore-admin/wikipedia-word';
 
-import { WikipediaWord } from '../services/w-news/models/wikipedia-word';
+import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
 import { fetchContentByTitle } from '../services/wikipedia-api/wikipedia-api';
 
 module.exports = functions

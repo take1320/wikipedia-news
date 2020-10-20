@@ -1,7 +1,7 @@
 import { firestore } from 'firebase-admin';
 
-import { collectionName } from '../services/w-news/constants';
-import { Publisher } from '../services/w-news/models/publisher';
+import { collectionName } from '../services/wikipedia-news/constants';
+import { Publisher } from '../services/wikipedia-news/models/publisher';
 
 export const savePublishers = async (
   db: firestore.Firestore,

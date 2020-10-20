@@ -1,5 +1,5 @@
 import { WikipediaContent } from './models/wikipedia-content';
-import { WikipediaWord } from '../w-news/models/wikipedia-word';
+import { WikipediaWord } from '../wikipedia-news/models/wikipedia-word';
 
 export const mergeWikipediaWord = (
   word: WikipediaWord,

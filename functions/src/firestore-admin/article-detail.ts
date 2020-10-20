@@ -1,7 +1,7 @@
 import admin from 'firebase-admin';
 
-import { collectionName } from '../services/w-news/constants';
-import { ArticleDetail } from '../services/w-news/models/article-detail';
+import { collectionName } from '../services/wikipedia-news/constants';
+import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
 
 export const saveArticleDetails = async (
   db: admin.firestore.Firestore,

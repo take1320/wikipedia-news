@@ -8,8 +8,8 @@ import {
 import { saveArticleWords } from '../firestore-admin/article-word';
 import { saveWikipediaWords } from '../firestore-admin/wikipedia-word';
 
-import { extractWords } from '../services/w-news/article';
-import { WikipediaWord } from '../services/w-news/models/wikipedia-word';
+import { extractWords } from '../services/wikipedia-news/article';
+import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
 
 module.exports = functions
   .region('asia-northeast1')

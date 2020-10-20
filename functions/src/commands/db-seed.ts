@@ -3,9 +3,9 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 import parse from 'csv-parse/lib/sync';
 
-import { Article } from '../services/w-news/models/article';
-import { Publisher } from '../services/w-news/models/publisher';
-import { collectionName } from '../services/w-news/constants';
+import { Article } from '../services/wikipedia-news/models/article';
+import { Publisher } from '../services/wikipedia-news/models/publisher';
+import { collectionName } from '../services/wikipedia-news/constants';
 import { addCounter } from '../firestore-admin/record-counter';
 
 import serviceAccount from '../wikipedia-news-firebase-adminsdk.json';

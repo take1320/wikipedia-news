@@ -7,7 +7,7 @@ import {
 } from '../firestore-admin/article-detail';
 import { saveArticleWords } from '../firestore-admin/article-word';
 
-import { extractWords } from '../services/w-news/article';
+import { extractWords } from '../services/wikipedia-news/article';
 
 module.exports = functions
   .region('asia-northeast1')

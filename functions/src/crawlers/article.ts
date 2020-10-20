@@ -1,9 +1,9 @@
 import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 
-import { Article } from '../services/w-news/models/article';
-import { Publisher } from '../services/w-news/models/publisher';
-import { ArticleDetail } from '../services/w-news/models/article-detail';
+import { Article } from '../services/wikipedia-news/models/article';
+import { Publisher } from '../services/wikipedia-news/models/publisher';
+import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
 import {
   hasPublisherSelector,
   findArticleRef,
