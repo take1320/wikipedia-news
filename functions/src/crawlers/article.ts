@@ -65,6 +65,7 @@ export const crawlArticleDetail = async (
     article: articleRef,
     publisher: article.publisher,
     wordExtracted: false,
+    wikipediaAssociated: false,
     createdAt: null,
     updatedAt: null,
   };

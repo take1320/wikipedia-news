@@ -11,6 +11,7 @@ export type ArticleDetail = {
   article: firestore.DocumentReference<Article>;
   publisher: firestore.DocumentReference<Publisher>;
   wordExtracted: boolean;
+  wikipediaAssociated: boolean;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
 };

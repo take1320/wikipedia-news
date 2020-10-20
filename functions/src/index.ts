@@ -13,6 +13,11 @@ import {
 } from './firestore-admin/article-detail';
 import { savePublishers } from './firestore-admin/publisher';
 import { saveArticleWords } from './firestore-admin/article-word';
+import {
+  saveWikipediaWords,
+  updateWikipediaWord,
+  fetchNotSearchedWord,
+} from './firestore-admin/wikipedia-word';
 
 import { addCounter } from './firestore-admin/record-counter';
 import { collectionName } from './services/w-news/constants';
@@ -25,6 +30,8 @@ import {
   extractCrawlableArticles,
 } from './crawlers/article';
 import { extractWords } from './services/w-news/article';
+import { WikipediaWord } from './services/w-news/models/wikipedia-word';
+import { fetchContentByTitle } from './services/wikipedia-api/wikipedia-api';
 
 admin.initializeApp();
 
@@ -131,6 +138,18 @@ export const articleExtractWords = functions
     for await (const detail of emptyWordsArticleDetails) {
       console.log('--- --- detail.title: ' + detail.title);
       const words = await extractWords(detail);
+      await saveWikipediaWords(
+        db,
+        words.map(
+          (w) =>
+            ({
+              id: w.id,
+              title: null,
+              url: null,
+              isSearched: false,
+            } as WikipediaWord),
+        ),
+      );
       await saveArticleWords(db, detail, words);
       await saveArticleDetails(db, [
         {
@@ -138,18 +157,53 @@ export const articleExtractWords = functions
           wordExtracted: true,
         },
       ]);
+
       await sleep();
     }
 
-    // 単語を登録する
-    // wikipedia単語に登録されているかチェックする
-    // 未登録だったら登録する
-    // 登録済みだったら・・？
-
-    // wikipedia問い合わせ
-
     res.send('hoge');
     console.log('--- end articleExtractWords');
+  });
+
+export const crawlWikipediaPage = functions
+  .region('asia-northeast1')
+  .https.onRequest(async (req, res) => {
+    console.log('--- strat associateWords');
+
+    const db = admin.firestore();
+
+    // 処理対象となる単語の取得
+    const notSearchedWords = await fetchNotSearchedWord(db);
+
+    for await (const word of notSearchedWords) {
+      console.log('--- --- word.id: ' + word.id);
+      const wikipediaContent = await fetchContentByTitle(word.id);
+
+      const updateWord: WikipediaWord =
+        wikipediaContent.query === undefined ||
+        wikipediaContent.query.pages === undefined ||
+        wikipediaContent.query.pages[0] === undefined ||
+        (wikipediaContent.query.pages[0].missing !== undefined &&
+          wikipediaContent.query.pages[0].missing === true) ||
+        (wikipediaContent.query.pages[0].extract !== undefined &&
+          wikipediaContent.query.pages[0].extract === '')
+          ? {
+              ...word,
+              isSearched: true,
+            }
+          : {
+              ...word,
+              title: wikipediaContent.query.pages[0].title,
+              url: wikipediaContent.query.pages[0].fullurl,
+              isSearched: true,
+            };
+
+      await updateWikipediaWord(db, updateWord);
+      await sleep();
+    }
+
+    res.send('hoge');
+    console.log('--- end associateWords');
   });
 
 export const kuromoji = functions
