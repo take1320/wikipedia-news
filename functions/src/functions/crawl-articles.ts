@@ -2,14 +2,8 @@ import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 import puppeteer from 'puppeteer';
 
-import {
-  saveArticles,
-  fetchEmptyDetailArticles,
-} from '../firestore-admin/article';
-import { saveArticleDetails } from '../firestore-admin/article-detail';
-
-import { addCounter } from '../firestore-admin/record-counter';
-import { collectionName } from '../services/wikipedia-news/constants';
+import * as articleStore from '../firestore-admin/article';
+import * as articleDetailStore from '../firestore-admin/article-detail';
 import { Article } from '../services/wikipedia-news/models/article';
 import {
   crawlArticleDetail,
@@ -38,12 +32,11 @@ module.exports = functions
   .https.onRequest(async (req, res) => {
     const db = admin.firestore();
 
-    const articles = await fetchEmptyDetailArticles(db);
-
     const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
     const page = await browser.newPage();
 
     // クローリング可能な記事の絞り込み
+    const articles = await articleStore.findNoDetails(db);
     const crawlableArticles = await extractCrawlableArticles(db, articles);
     console.log('crawlableArticles:' + crawlableArticles.length);
 
@@ -53,8 +46,7 @@ module.exports = functions
       articleDetails.push(await crawlArticleDetail(page, db, crawlableArticle));
     }
     console.log('articleDetails:' + articleDetails.length);
-    const articleDetailsCount = await saveArticleDetails(db, articleDetails);
-    await addCounter(db, collectionName.articleDetails, articleDetailsCount);
+    await articleDetailStore.bulkCreate(db, articleDetails);
 
     // hasDetailをtrueに更新する
     const hasDetailArticles = (
@@ -62,8 +54,7 @@ module.exports = functions
         articleDetails.map((articleDetail) => articleDetail.article.get()),
       )
     ).map((article) => ({ ...(article.data() as Article), hasDetail: true }));
-
-    await saveArticles(db, hasDetailArticles);
+    await articleStore.bulkCreate(db, hasDetailArticles);
 
     res.send('ok');
   });

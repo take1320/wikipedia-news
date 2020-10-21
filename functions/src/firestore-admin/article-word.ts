@@ -4,11 +4,11 @@ import { collectionName } from '../services/wikipedia-news/constants';
 import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
 import { ArticleWord } from '../services/wikipedia-news/models/article-word';
 
-export const saveArticleWords = async (
+export const bulkCreate = async (
   db: admin.firestore.Firestore,
   articleDetail: ArticleDetail,
   articleWords: ArticleWord[],
-): Promise<number> => {
+): Promise<void> => {
   if (!articleDetail.id) throw new Error('articleDetail.id is null');
 
   console.log('saveArticleWords detail' + articleDetail.title);
@@ -18,7 +18,6 @@ export const saveArticleWords = async (
     .collection(collectionName.articleDetails)
     .doc(articleDetail.id)
     .collection(collectionName.articleWords);
-  let count = 0;
 
   for await (const articleWord of articleWords) {
     await articleWordsRef.doc(articleWord.id).set({
@@ -26,9 +25,5 @@ export const saveArticleWords = async (
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
-
-    count += 1;
   }
-
-  return count;
 };

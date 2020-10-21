@@ -1,11 +1,8 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import {
-  updateWikipediaWord,
-  fetchNotSearchedWord,
-} from '../firestore-admin/wikipedia-word';
-
+import * as wikipediaWordStore from '../firestore-admin/wikipedia-word';
+import { organizeContent } from '../services/wikipedia-news/wikipedia';
 import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
 import { fetchContentByTitle } from '../services/wikipedia-api/wikipedia-api';
 
@@ -17,37 +14,25 @@ module.exports = functions
     const db = admin.firestore();
 
     // 処理対象となる単語の取得
-    const notSearchedWords = await fetchNotSearchedWord(db);
+    const notSearchedWords = await wikipediaWordStore.findNotSearched(db);
 
     for await (const word of notSearchedWords) {
       console.log('--- --- word.id: ' + word.id);
       const wikipediaContent = await fetchContentByTitle(word.id);
+      const organizedContent = organizeContent(wikipediaContent);
+      const updateWord: WikipediaWord = {
+        ...word,
+        title: organizedContent.title,
+        url: organizedContent.fullUrl,
+        length: organizedContent.length,
+        isSearched: true,
+      };
 
-      const updateWord: WikipediaWord =
-        wikipediaContent.query === undefined ||
-        wikipediaContent.query.pages === undefined ||
-        wikipediaContent.query.pages[0] === undefined ||
-        (wikipediaContent.query.pages[0].missing !== undefined &&
-          wikipediaContent.query.pages[0].missing === true) ||
-        (wikipediaContent.query.pages[0].extract !== undefined &&
-          wikipediaContent.query.pages[0].extract === '')
-          ? {
-              ...word,
-              isSearched: true,
-            }
-          : {
-              ...word,
-              title: wikipediaContent.query.pages[0].title,
-              url: wikipediaContent.query.pages[0].fullurl,
-              isSearched: true,
-            };
-
-      await updateWikipediaWord(db, updateWord);
+      await wikipediaWordStore.update(db, updateWord);
       await sleep();
     }
 
-    res.send('hoge');
-    console.log('--- end associateWords');
+    res.send('ok');
   });
 
 const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));

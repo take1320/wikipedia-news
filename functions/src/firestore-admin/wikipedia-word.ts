@@ -3,14 +3,13 @@ import admin from 'firebase-admin';
 import { collectionName } from '../services/wikipedia-news/constants';
 import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
 
-export const saveWikipediaWords = async (
+export const builCreate = async (
   db: admin.firestore.Firestore,
   wikipediaWords: WikipediaWord[],
-): Promise<number> => {
+): Promise<void> => {
   console.log('saveWikipediaWords words' + wikipediaWords.length);
 
   const wikipediaWordsRef = db.collection(collectionName.wikipediaWords);
-  let count = 0;
 
   const query = await wikipediaWordsRef.get();
   const existingWords = query.docs.map((doc) => doc.data() as WikipediaWord);
@@ -25,18 +24,14 @@ export const saveWikipediaWords = async (
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
-
-    count += 1;
   }
-
-  return count;
 };
 
-export const updateWikipediaWord = async (
+export const update = async (
   db: admin.firestore.Firestore,
   updateValue: WikipediaWord,
 ): Promise<void> => {
-  const currentValue = await fetchById(db, updateValue.id);
+  const currentValue = await findById(db, updateValue.id);
 
   await db
     .collection(collectionName.wikipediaWords)
@@ -48,7 +43,7 @@ export const updateWikipediaWord = async (
     });
 };
 
-export const fetchById = async (
+export const findById = async (
   db: admin.firestore.Firestore,
   id: string,
 ): Promise<WikipediaWord> => {
@@ -60,10 +55,10 @@ export const fetchById = async (
   return result;
 };
 
-export const fetchNotSearchedWord = async (
+export const findNotSearched = async (
   db: admin.firestore.Firestore,
 ): Promise<WikipediaWord[]> => {
-  console.log('--- *** start fetchNotSearchedWord');
+  console.log('--- *** start findNotSearchedWord');
 
   const snap = await db
     .collection(collectionName.wikipediaWords)
@@ -79,6 +74,6 @@ export const fetchNotSearchedWord = async (
 
   console.log('wikipediaWords.length:' + wikipediaWords.length);
 
-  console.log('--- *** end fetchNotSearchedWord');
+  console.log('--- *** end findNotSearchedWord');
   return wikipediaWords;
 };

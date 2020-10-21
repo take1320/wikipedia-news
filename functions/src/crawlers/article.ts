@@ -1,13 +1,10 @@
 import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 
+import * as articleStore from '../firestore-admin/article';
 import { Article } from '../services/wikipedia-news/models/article';
 import { Publisher } from '../services/wikipedia-news/models/publisher';
 import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
-import {
-  hasPublisherSelector,
-  findArticleRef,
-} from '../firestore-admin/article';
 
 export const crawlArticleDetail = async (
   page: puppeteer.Page,
@@ -55,7 +52,7 @@ export const crawlArticleDetail = async (
     return removeDoubleReturn;
   };
 
-  const articleRef = findArticleRef(db, article.id);
+  const articleRef = articleStore.getRefById(db, article.id);
 
   const articleDetail: ArticleDetail = {
     title: article.title,
@@ -77,11 +74,11 @@ export const extractCrawlableArticles = async (
   db: admin.firestore.Firestore,
   articles: Article[],
 ): Promise<Article[]> => {
-  const crawlable: Article[] = [];
+  const crawlableArtiles: Article[] = [];
 
   for (const article of articles) {
-    const hasSelector = await hasPublisherSelector(db, article);
-    if (hasSelector) crawlable.push(article);
+    const hasSelector = await articleStore.hasPublisherSelector(article);
+    if (hasSelector) crawlableArtiles.push(article);
   }
-  return crawlable;
+  return crawlableArtiles;
 };

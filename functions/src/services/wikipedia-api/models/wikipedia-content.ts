@@ -22,4 +22,5 @@ export type Page = {
   fullurl: string;
   extract: string;
   missing?: boolean;
+  length: number;
 };

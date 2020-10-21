@@ -1,43 +1,35 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import {
-  saveArticleDetails,
-  fetchEmptyWordsArticleDetails,
-} from '../firestore-admin/article-detail';
-import { saveArticleWords } from '../firestore-admin/article-word';
-import { saveWikipediaWords } from '../firestore-admin/wikipedia-word';
-
+import * as articleDetailStore from '../firestore-admin/article-detail';
+import * as articleWordStore from '../firestore-admin/article-word';
+import * as wikipediaWordStore from '../firestore-admin/wikipedia-word';
 import { extractWords } from '../services/wikipedia-news/article';
 import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
 
 module.exports = functions
   .region('asia-northeast1')
   .https.onRequest(async (req, res) => {
-    console.log('--- strat articleExtractWords');
-
     const db = admin.firestore();
 
-    // 単語分割
-    const emptyWordsArticleDetails = await fetchEmptyWordsArticleDetails(db);
-
-    for await (const detail of emptyWordsArticleDetails) {
+    const details = await articleDetailStore.findNotWordExtracted(db);
+    for await (const detail of details) {
       console.log('--- --- detail.title: ' + detail.title);
       const words = await extractWords(detail);
-      await saveWikipediaWords(
-        db,
-        words.map(
-          (w) =>
-            ({
-              id: w.id,
-              title: null,
-              url: null,
-              isSearched: false,
-            } as WikipediaWord),
-        ),
+      const wikipediaWords = words.map(
+        (w) =>
+          ({
+            id: w.id,
+            title: null,
+            url: null,
+            length: null,
+            isSearched: false,
+          } as WikipediaWord),
       );
-      await saveArticleWords(db, detail, words);
-      await saveArticleDetails(db, [
+
+      await wikipediaWordStore.builCreate(db, wikipediaWords);
+      await articleWordStore.bulkCreate(db, detail, words);
+      await articleDetailStore.bulkCreate(db, [
         {
           ...detail,
           wordExtracted: true,

@@ -4,12 +4,11 @@ import { collectionName } from '../services/wikipedia-news/constants';
 import { Article } from '../services/wikipedia-news/models/article';
 import { Publisher } from '../services/wikipedia-news/models/publisher';
 
-export const saveArticles = async (
+export const bulkCreate = async (
   db: admin.firestore.Firestore,
   articles: Article[],
-): Promise<number> => {
+): Promise<void> => {
   const articlesRef = db.collection(collectionName.articles);
-  let count = 0;
 
   for await (const article of articles) {
     await articlesRef.doc(article.id).set({
@@ -17,14 +16,10 @@ export const saveArticles = async (
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
-
-    count += 1;
   }
-
-  return count;
 };
 
-export const fetchEmptyDetailArticles = async (
+export const findNoDetails = async (
   db: admin.firestore.Firestore,
 ): Promise<Article[]> => {
   const snap = await db
@@ -45,25 +40,16 @@ export const fetchEmptyDetailArticles = async (
 };
 
 export const hasPublisherSelector = async (
-  db: admin.firestore.Firestore,
   article: Article,
 ): Promise<boolean> => {
   const publisher: Publisher = (
     await article.publisher.get()
   ).data() as Publisher;
 
-  const hasSelector = publisher.selector !== null && publisher.selector !== '';
-
-  console.log(
-    `article.title:${article.title}, publisher.name:${
-      publisher.name
-    },hasSelector:${hasSelector ? 'true' : 'false'}`,
-  );
-
-  return hasSelector;
+  return publisher.selector !== null && publisher.selector !== '';
 };
 
-export const findArticleRef = (
+export const getRefById = (
   db: admin.firestore.Firestore,
   id: string,
 ): admin.firestore.DocumentReference<Article> => {

@@ -7,7 +7,6 @@ const functionMap = {
   crawlArticles: './functions/crawl-articles',
   extractArticleWords: './functions/extract-article-words',
   fetchWikipedia: './functions/fetch-wikipedia',
-  kuromoji: './functions/kuromoji',
 };
 
 const loadFunctions = (fnMap: typeof functionMap) => {

@@ -1,13 +1,9 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import * as GoogleNewsApi from '../services/rakuten-rapid-api/google-news-api';
-import { saveArticles } from '../firestore-admin/article';
-import { savePublishers } from '../firestore-admin/publisher';
-import { addCounter } from '../firestore-admin/record-counter';
-import { collectionName } from '../services/wikipedia-news/constants';
-import { Article } from '../services/wikipedia-news/models/article';
-import { Publisher } from '../services/wikipedia-news/models/publisher';
+import * as articleStore from '../firestore-admin/article';
+import * as publisherStore from '../firestore-admin/publisher';
+import { fetchTopHeadLines } from '../services/rakuten-rapid-api/google-news-api';
 import {
   toPublishers,
   toArticles,
@@ -18,17 +14,15 @@ module.exports = functions
   .https.onRequest(async (req, res) => {
     const db = admin.firestore();
 
-    const headLines = await GoogleNewsApi.fetchTopHeadLines(
+    const headlines = await fetchTopHeadLines(
       functions.config().rakuten_rapid_api.api_key,
     );
 
-    const publishers: Publisher[] = toPublishers(headLines.articles);
-    const savePublishersCount = await savePublishers(db, publishers);
-    await addCounter(db, collectionName.publishers, savePublishersCount);
+    const publishers = toPublishers(headlines.articles);
+    await publisherStore.bulkCreate(db, publishers);
 
-    const articles: Article[] = toArticles(headLines.articles, db);
-    const saveArticlesCount = await saveArticles(db, articles);
-    await addCounter(db, collectionName.articles, saveArticlesCount);
+    const articles = toArticles(headlines.articles, db);
+    await articleStore.bulkCreate(db, articles);
 
     res.send('ok');
   });
