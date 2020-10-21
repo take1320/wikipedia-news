@@ -1,14 +1,14 @@
 import admin from 'firebase-admin';
 
 import { collectionName } from '../services/wikipedia-news/constants';
-import { Article } from '../services/wikipedia-news/models/article';
+import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import { Publisher } from '../services/wikipedia-news/models/publisher';
 
 export const bulkCreate = async (
   db: admin.firestore.Firestore,
-  articles: Article[],
+  articles: HeadlineArticle[],
 ): Promise<void> => {
-  const articlesRef = db.collection(collectionName.articles);
+  const articlesRef = db.collection(collectionName.headlineArticles);
 
   for await (const article of articles) {
     await articlesRef.doc(article.id).set({
@@ -21,17 +21,17 @@ export const bulkCreate = async (
 
 export const findNoDetails = async (
   db: admin.firestore.Firestore,
-): Promise<Article[]> => {
+): Promise<HeadlineArticle[]> => {
   const snap = await db
-    .collection(collectionName.articles)
+    .collection(collectionName.headlineArticles)
     .where('hasDetail', '==', false)
     .orderBy('createdAt', 'desc')
     .limit(30)
     .get();
 
-  const articles: Article[] = [];
+  const articles: HeadlineArticle[] = [];
   snap.forEach((doc) => {
-    articles.push(doc.data() as Article);
+    articles.push(doc.data() as HeadlineArticle);
   });
 
   console.log('articles.length:' + articles.length);
@@ -40,7 +40,7 @@ export const findNoDetails = async (
 };
 
 export const hasPublisherSelector = async (
-  article: Article,
+  article: HeadlineArticle,
 ): Promise<boolean> => {
   const publisher: Publisher = (
     await article.publisher.get()
@@ -52,8 +52,8 @@ export const hasPublisherSelector = async (
 export const getRefById = (
   db: admin.firestore.Firestore,
   id: string,
-): admin.firestore.DocumentReference<Article> => {
+): admin.firestore.DocumentReference<HeadlineArticle> => {
   return db
-    .collection(collectionName.articles)
-    .doc(id) as admin.firestore.DocumentReference<Article>;
+    .collection(collectionName.headlineArticles)
+    .doc(id) as admin.firestore.DocumentReference<HeadlineArticle>;
 };

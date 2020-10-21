@@ -1,13 +1,13 @@
 import { firestore } from 'firebase-admin';
 import { Article as GNArticle } from '../rakuten-rapid-api/models/google-news';
-import { Article } from './models/article';
+import { HeadlineArticle } from './models/headline-articles';
 import { Publisher } from './models/publisher';
 import { findPublisherRef } from '../../firestore-admin/publisher';
 
-export const toArticle = (
+export const toHeadlineArticle = (
   gNArticle: GNArticle,
   db: firestore.Firestore,
-): Article => {
+): HeadlineArticle => {
   const publisherRef = findPublisherRef(db, gNArticle.source.title);
   if (!publisherRef) throw new Error('publisher not found');
   return {
@@ -21,11 +21,13 @@ export const toArticle = (
   };
 };
 
-export const toArticles = (
+export const toHeadlineArticles = (
   gNArticles: GNArticle[],
   db: firestore.Firestore,
-): Article[] =>
-  gNArticles.map((gNArticle: GNArticle): Article => toArticle(gNArticle, db));
+): HeadlineArticle[] =>
+  gNArticles.map(
+    (gNArticle: GNArticle): HeadlineArticle => toHeadlineArticle(gNArticle, db),
+  );
 
 export const toPublisher = (gNArticle: GNArticle): Publisher => ({
   name: gNArticle.source.title,

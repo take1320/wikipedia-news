@@ -1,5 +1,5 @@
 export const collectionName = {
-  articles: 'articles',
+  headlineArticles: 'headlineArticles',
   articleDetails: 'articleDetails',
   articleWords: 'articleWords',
   wikipediaWords: 'wikipediaWords',

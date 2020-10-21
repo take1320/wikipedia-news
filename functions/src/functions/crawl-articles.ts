@@ -2,9 +2,9 @@ import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 import puppeteer from 'puppeteer';
 
-import * as articleStore from '../firestore-admin/article';
+import * as headlineArticleStore from '../firestore-admin/headline-article';
 import * as articleDetailStore from '../firestore-admin/article-detail';
-import { Article } from '../services/wikipedia-news/models/article';
+import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import {
   crawlArticleDetail,
   extractCrawlableArticles,
@@ -36,7 +36,7 @@ module.exports = functions
     const page = await browser.newPage();
 
     // クローリング可能な記事の絞り込み
-    const articles = await articleStore.findNoDetails(db);
+    const articles = await headlineArticleStore.findNoDetails(db);
     const crawlableArticles = await extractCrawlableArticles(db, articles);
     console.log('crawlableArticles:' + crawlableArticles.length);
 
@@ -53,8 +53,11 @@ module.exports = functions
       await Promise.all(
         articleDetails.map((articleDetail) => articleDetail.article.get()),
       )
-    ).map((article) => ({ ...(article.data() as Article), hasDetail: true }));
-    await articleStore.bulkCreate(db, hasDetailArticles);
+    ).map((article) => ({
+      ...(article.data() as HeadlineArticle),
+      hasDetail: true,
+    }));
+    await headlineArticleStore.bulkCreate(db, hasDetailArticles);
 
     res.send('ok');
   });

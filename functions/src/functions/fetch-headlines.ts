@@ -1,12 +1,12 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import * as articleStore from '../firestore-admin/article';
+import * as headlineArticleStore from '../firestore-admin/headline-article';
 import * as publisherStore from '../firestore-admin/publisher';
 import { fetchTopHeadLines } from '../services/rakuten-rapid-api/google-news-api';
 import {
   toPublishers,
-  toArticles,
+  toHeadlineArticles,
 } from '../services/wikipedia-news/google-news';
 
 module.exports = functions
@@ -21,8 +21,8 @@ module.exports = functions
     const publishers = toPublishers(headlines.articles);
     await publisherStore.bulkCreate(db, publishers);
 
-    const articles = toArticles(headlines.articles, db);
-    await articleStore.bulkCreate(db, articles);
+    const articles = toHeadlineArticles(headlines.articles, db);
+    await headlineArticleStore.bulkCreate(db, articles);
 
     res.send('ok');
   });

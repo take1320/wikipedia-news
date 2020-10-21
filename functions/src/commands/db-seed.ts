@@ -3,7 +3,7 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 import parse from 'csv-parse/lib/sync';
 
-import { Article } from '../services/wikipedia-news/models/article';
+import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import { Publisher } from '../services/wikipedia-news/models/publisher';
 import { collectionName } from '../services/wikipedia-news/constants';
 import { addCounter } from '../firestore-admin/record-counter';
@@ -25,9 +25,9 @@ const uploadSeed = async (collection: string, seedFile: string) => {
   });
   const ref = db.collection(collection);
   switch (collection) {
-    case collectionName.articles: {
-      const docs: Required<Article>[] =
-        records.map((record: Article) => ({
+    case collectionName.headlineArticles: {
+      const docs: Required<HeadlineArticle>[] =
+        records.map((record: HeadlineArticle) => ({
           ...record,
           createdAt: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),

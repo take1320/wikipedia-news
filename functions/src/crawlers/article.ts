@@ -1,20 +1,20 @@
 import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 
-import * as articleStore from '../firestore-admin/article';
-import { Article } from '../services/wikipedia-news/models/article';
+import * as headlineArticleStore from '../firestore-admin/headline-article';
+import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import { Publisher } from '../services/wikipedia-news/models/publisher';
 import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
 
 export const crawlArticleDetail = async (
   page: puppeteer.Page,
   db: admin.firestore.Firestore,
-  article: Article,
+  headline: HeadlineArticle,
 ): Promise<ArticleDetail> => {
-  console.log('article:' + article.title);
+  console.log('article:' + headline.title);
 
   const publisher: Publisher = (
-    await article.publisher.get()
+    await headline.publisher.get()
   ).data() as Publisher;
 
   if (!publisher.selector) {
@@ -22,7 +22,7 @@ export const crawlArticleDetail = async (
   }
 
   // 本文のクローリング
-  await page.goto(article.url, { waitUntil: 'domcontentloaded' });
+  await page.goto(headline.url, { waitUntil: 'domcontentloaded' });
 
   const rawTexts = await page.evaluate((selector) => {
     const list = Array.from(document.querySelectorAll(selector));
@@ -52,15 +52,15 @@ export const crawlArticleDetail = async (
     return removeDoubleReturn;
   };
 
-  const articleRef = articleStore.getRefById(db, article.id);
+  const articleRef = headlineArticleStore.getRefById(db, headline.id);
 
   const articleDetail: ArticleDetail = {
-    title: article.title,
+    title: headline.title,
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
     url: url,
     article: articleRef,
-    publisher: article.publisher,
+    publisher: headline.publisher,
     wordExtracted: false,
     wikipediaAssociated: false,
     createdAt: null,
@@ -72,12 +72,14 @@ export const crawlArticleDetail = async (
 
 export const extractCrawlableArticles = async (
   db: admin.firestore.Firestore,
-  articles: Article[],
-): Promise<Article[]> => {
-  const crawlableArtiles: Article[] = [];
+  articles: HeadlineArticle[],
+): Promise<HeadlineArticle[]> => {
+  const crawlableArtiles: HeadlineArticle[] = [];
 
   for (const article of articles) {
-    const hasSelector = await articleStore.hasPublisherSelector(article);
+    const hasSelector = await headlineArticleStore.hasPublisherSelector(
+      article,
+    );
     if (hasSelector) crawlableArtiles.push(article);
   }
   return crawlableArtiles;

@@ -1,6 +1,6 @@
 import { firestore } from 'firebase-admin';
 import { Publisher } from './publisher';
-import { Article } from './article';
+import { HeadlineArticle } from './headline-articles';
 
 export type ArticleDetail = {
   id?: string;
@@ -8,7 +8,7 @@ export type ArticleDetail = {
   text: string;
   rawText: string | null;
   url: string;
-  article: firestore.DocumentReference<Article>;
+  article: firestore.DocumentReference<HeadlineArticle>;
   publisher: firestore.DocumentReference<Publisher>;
   wordExtracted: boolean;
   wikipediaAssociated: boolean;

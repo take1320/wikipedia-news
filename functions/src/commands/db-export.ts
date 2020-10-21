@@ -4,7 +4,7 @@ import fs from 'fs';
 import stringifySync from 'csv-stringify/lib/sync';
 
 import { Publisher } from '../services/wikipedia-news/models/publisher';
-import { Article } from '../services/wikipedia-news/models/article';
+import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import { collectionName } from '../services/wikipedia-news/constants';
 
 import serviceAccount from '../wikipedia-news-firebase-adminsdk.json';
@@ -22,13 +22,13 @@ const exportCollection = async (collection: string) => {
 
   let exportData = [];
   switch (collection) {
-    case collectionName.articles: {
-      const docs: Article[] = [];
+    case collectionName.headlineArticles: {
+      const docs: HeadlineArticle[] = [];
       snap.forEach((doc) => {
         docs.push({
           id: doc.id,
           ...doc.data(),
-        } as Article);
+        } as HeadlineArticle);
       });
 
       exportData = docs.map((doc) => ({
