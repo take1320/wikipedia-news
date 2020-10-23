@@ -1,10 +1,10 @@
 import { WikipediaContent } from './models/wikipedia-content';
-import { WikipediaWord } from '../wikipedia-news/models/wikipedia-word';
+import { WikipediaArticle } from '../wikipedia-news/models/wikipedia-article';
 
-export const mergeWikipediaWord = (
-  word: WikipediaWord,
+export const mergeWikipediaArticle = (
+  word: WikipediaArticle,
   content: WikipediaContent,
-): WikipediaWord => {
+): WikipediaArticle => {
   if (
     content.query === undefined ||
     content.query.pages === undefined ||

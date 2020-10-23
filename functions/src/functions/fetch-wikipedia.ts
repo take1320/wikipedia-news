@@ -1,9 +1,9 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import * as wikipediaWordStore from '../firestore-admin/wikipedia-word';
+import * as wikipediaArticleStore from '../firestore-admin/wikipedia-article';
 import { organizeContent } from '../services/wikipedia-news/wikipedia';
-import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
+import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-article';
 import { fetchContentByTitle } from '../services/wikipedia-api/wikipedia-api';
 
 module.exports = functions
@@ -14,13 +14,13 @@ module.exports = functions
     const db = admin.firestore();
 
     // 処理対象となる単語の取得
-    const notSearchedWords = await wikipediaWordStore.findNotSearched(db);
+    const notSearchedWords = await wikipediaArticleStore.findNotSearched(db);
 
     for await (const word of notSearchedWords) {
       console.log('--- --- word.id: ' + word.id);
       const wikipediaContent = await fetchContentByTitle(word.id);
       const organizedContent = organizeContent(wikipediaContent);
-      const updateWord: WikipediaWord = {
+      const updateWord: WikipediaArticle = {
         ...word,
         title: organizedContent.title,
         url: organizedContent.fullUrl,
@@ -28,7 +28,7 @@ module.exports = functions
         isSearched: true,
       };
 
-      await wikipediaWordStore.update(db, updateWord);
+      await wikipediaArticleStore.update(db, updateWord);
       await sleep();
     }
 

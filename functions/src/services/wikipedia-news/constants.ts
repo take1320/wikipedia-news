@@ -2,7 +2,7 @@ export const collectionName = {
   headlineArticles: 'headlineArticles',
   newsArticles: 'newsArticles',
   articleWords: 'articleWords',
-  wikipediaWords: 'wikipediaWords',
+  wikipediaArticles: 'wikipediaArticles',
   publishers: 'publishers',
   docCounters: 'docCounters',
 } as const;

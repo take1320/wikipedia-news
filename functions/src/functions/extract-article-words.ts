@@ -3,9 +3,9 @@ import admin from 'firebase-admin';
 
 import * as newsArticleStore from '../firestore-admin/news-article';
 import * as articleWordStore from '../firestore-admin/article-word';
-import * as wikipediaWordStore from '../firestore-admin/wikipedia-word';
+import * as wikipediaArticleStore from '../firestore-admin/wikipedia-article';
 import { extractWords } from '../services/wikipedia-news/article';
-import { WikipediaWord } from '../services/wikipedia-news/models/wikipedia-word';
+import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-article';
 
 module.exports = functions
   .region('asia-northeast1')
@@ -16,7 +16,7 @@ module.exports = functions
     for await (const detail of details) {
       console.log('--- --- detail.title: ' + detail.title);
       const words = await extractWords(detail);
-      const wikipediaWords = words.map(
+      const wikipediaArticles = words.map(
         (w) =>
           ({
             id: w.id,
@@ -24,10 +24,10 @@ module.exports = functions
             url: null,
             length: null,
             isSearched: false,
-          } as WikipediaWord),
+          } as WikipediaArticle),
       );
 
-      await wikipediaWordStore.builCreate(db, wikipediaWords);
+      await wikipediaArticleStore.builCreate(db, wikipediaArticles);
       await articleWordStore.bulkCreate(db, detail, words);
       await newsArticleStore.bulkCreate(db, [
         {

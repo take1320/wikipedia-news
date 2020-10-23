@@ -1,6 +1,6 @@
 import { firestore } from 'firebase-admin';
 
-export type WikipediaWord = {
+export type WikipediaArticle = {
   id: string;
   title: string | null;
   url: string | null;
