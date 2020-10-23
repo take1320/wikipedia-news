@@ -23,6 +23,7 @@ module.exports = functions
             title: null,
             url: null,
             length: null,
+            summary: null,
             isSearched: false,
           } as WikipediaArticle),
       );

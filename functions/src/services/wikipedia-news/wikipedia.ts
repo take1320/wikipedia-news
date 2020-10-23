@@ -4,6 +4,7 @@ interface OrganizedContent {
   isMissing: boolean;
   title: string;
   fullUrl: string;
+  extract: string;
   length: number;
 }
 
@@ -21,12 +22,14 @@ export const organizeContent = (
         isMissing: true,
         title: '',
         fullUrl: '',
+        extract: '',
         length: 0,
       }
     : {
         isMissing: false,
         title: wikipediaContent.query.pages[0].title,
         fullUrl: wikipediaContent.query.pages[0].fullurl,
+        extract: wikipediaContent.query.pages[0].extract,
         length: wikipediaContent.query.pages[0].length,
       };
 };

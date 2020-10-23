@@ -25,6 +25,7 @@ module.exports = functions
         title: organizedContent.title,
         url: organizedContent.fullUrl,
         length: organizedContent.length,
+        summary: organizedContent.extract,
         isSearched: true,
       };
 
