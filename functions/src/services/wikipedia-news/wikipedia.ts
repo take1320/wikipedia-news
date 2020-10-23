@@ -1,6 +1,6 @@
 import { WikipediaContent } from '../wikipedia-api/models/wikipedia-content';
 
-interface OrganizedResult {
+interface OrganizedContent {
   isMissing: boolean;
   title: string;
   fullUrl: string;
@@ -9,7 +9,7 @@ interface OrganizedResult {
 
 export const organizeContent = (
   wikipediaContent: WikipediaContent,
-): OrganizedResult => {
+): OrganizedContent => {
   return wikipediaContent.query === undefined ||
     wikipediaContent.query.pages === undefined ||
     wikipediaContent.query.pages[0] === undefined ||

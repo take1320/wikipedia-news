@@ -1,14 +1,14 @@
 import { firestore } from 'firebase-admin';
-import { ArticleDetail } from './models/article-detail';
+import { NewsArticle } from './models/news-article';
 import { ArticleWord } from './models/article-word';
 import { torknize, extractNoun } from './kuromoji';
 
 export const extractWords = async (
-  articleDetail: ArticleDetail,
+  newsArticle: NewsArticle,
 ): Promise<ArticleWord[]> => {
-  console.log('extractWords detail.title' + articleDetail.title);
+  console.log('extractWords detail.title' + newsArticle.title);
 
-  return extractNoun(await torknize(articleDetail.text)).map(
+  return extractNoun(await torknize(newsArticle.text)).map(
     (nown) =>
       ({
         id: nown.surface_form,

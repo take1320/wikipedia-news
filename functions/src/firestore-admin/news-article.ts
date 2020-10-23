@@ -1,19 +1,19 @@
 import admin from 'firebase-admin';
 
 import { collectionName } from '../services/wikipedia-news/constants';
-import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
+import { NewsArticle } from '../services/wikipedia-news/models/news-article';
 
 export const bulkCreate = async (
   db: admin.firestore.Firestore,
-  articleDetails: ArticleDetail[],
+  newsArticles: NewsArticle[],
 ): Promise<void> => {
-  const articleDetailsRef = db.collection(collectionName.articleDetails);
+  const newsArticlesRef = db.collection(collectionName.newsArticles);
 
-  for await (const articleDetail of articleDetails) {
-    const id = articleDetail.id ?? articleDetailsRef.doc().id;
+  for await (const newsArticle of newsArticles) {
+    const id = newsArticle.id ?? newsArticlesRef.doc().id;
 
-    await articleDetailsRef.doc(id).set({
-      ...articleDetail,
+    await newsArticlesRef.doc(id).set({
+      ...newsArticle,
       id: id,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -23,18 +23,18 @@ export const bulkCreate = async (
 
 export const findNotWordExtracted = async (
   db: admin.firestore.Firestore,
-): Promise<ArticleDetail[]> => {
+): Promise<NewsArticle[]> => {
   const snap = await db
-    .collection(collectionName.articleDetails)
+    .collection(collectionName.newsArticles)
     .where('wordExtracted', '==', false)
     .orderBy('createdAt', 'desc')
     .limit(30)
     .get();
 
-  const articleDetails: ArticleDetail[] = [];
+  const newsArticles: NewsArticle[] = [];
   snap.forEach((doc) => {
-    articleDetails.push(doc.data() as ArticleDetail);
+    newsArticles.push(doc.data() as NewsArticle);
   });
 
-  return articleDetails;
+  return newsArticles;
 };

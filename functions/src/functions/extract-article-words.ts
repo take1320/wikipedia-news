@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import * as articleDetailStore from '../firestore-admin/article-detail';
+import * as newsArticleStore from '../firestore-admin/news-article';
 import * as articleWordStore from '../firestore-admin/article-word';
 import * as wikipediaWordStore from '../firestore-admin/wikipedia-word';
 import { extractWords } from '../services/wikipedia-news/article';
@@ -12,7 +12,7 @@ module.exports = functions
   .https.onRequest(async (req, res) => {
     const db = admin.firestore();
 
-    const details = await articleDetailStore.findNotWordExtracted(db);
+    const details = await newsArticleStore.findNotWordExtracted(db);
     for await (const detail of details) {
       console.log('--- --- detail.title: ' + detail.title);
       const words = await extractWords(detail);
@@ -29,7 +29,7 @@ module.exports = functions
 
       await wikipediaWordStore.builCreate(db, wikipediaWords);
       await articleWordStore.bulkCreate(db, detail, words);
-      await articleDetailStore.bulkCreate(db, [
+      await newsArticleStore.bulkCreate(db, [
         {
           ...detail,
           wordExtracted: true,

@@ -4,13 +4,13 @@ import admin from 'firebase-admin';
 import * as headlineArticleStore from '../firestore-admin/headline-article';
 import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import { Publisher } from '../services/wikipedia-news/models/publisher';
-import { ArticleDetail } from '../services/wikipedia-news/models/article-detail';
+import { NewsArticle } from '../services/wikipedia-news/models/news-article';
 
-export const crawlArticleDetail = async (
+export const crawlNewsArticle = async (
   page: puppeteer.Page,
   db: admin.firestore.Firestore,
   headline: HeadlineArticle,
-): Promise<ArticleDetail> => {
+): Promise<NewsArticle> => {
   console.log('article:' + headline.title);
 
   const publisher: Publisher = (
@@ -54,7 +54,7 @@ export const crawlArticleDetail = async (
 
   const articleRef = headlineArticleStore.getRefById(db, headline.id);
 
-  const articleDetail: ArticleDetail = {
+  const newsArticle: NewsArticle = {
     title: headline.title,
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
@@ -67,7 +67,7 @@ export const crawlArticleDetail = async (
     updatedAt: null,
   };
 
-  return articleDetail;
+  return newsArticle;
 };
 
 export const extractCrawlableArticles = async (

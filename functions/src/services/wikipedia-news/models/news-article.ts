@@ -2,7 +2,7 @@ import { firestore } from 'firebase-admin';
 import { Publisher } from './publisher';
 import { HeadlineArticle } from './headline-articles';
 
-export type ArticleDetail = {
+export type NewsArticle = {
   id?: string;
   title: string;
   text: string;

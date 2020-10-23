@@ -1,6 +1,6 @@
 export const collectionName = {
   headlineArticles: 'headlineArticles',
-  articleDetails: 'articleDetails',
+  newsArticles: 'newsArticles',
   articleWords: 'articleWords',
   wikipediaWords: 'wikipediaWords',
   publishers: 'publishers',

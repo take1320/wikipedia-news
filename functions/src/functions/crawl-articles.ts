@@ -3,10 +3,10 @@ import admin from 'firebase-admin';
 import puppeteer from 'puppeteer';
 
 import * as headlineArticleStore from '../firestore-admin/headline-article';
-import * as articleDetailStore from '../firestore-admin/article-detail';
+import * as newsArticleStore from '../firestore-admin/news-article';
 import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import {
-  crawlArticleDetail,
+  crawlNewsArticle,
   extractCrawlableArticles,
 } from '../crawlers/article';
 
@@ -41,17 +41,17 @@ module.exports = functions
     console.log('crawlableArticles:' + crawlableArticles.length);
 
     // ニュース記事を取得する
-    const articleDetails = [];
+    const newsArticles = [];
     for await (const crawlableArticle of crawlableArticles) {
-      articleDetails.push(await crawlArticleDetail(page, db, crawlableArticle));
+      newsArticles.push(await crawlNewsArticle(page, db, crawlableArticle));
     }
-    console.log('articleDetails:' + articleDetails.length);
-    await articleDetailStore.bulkCreate(db, articleDetails);
+    console.log('newsArticles:' + newsArticles.length);
+    await newsArticleStore.bulkCreate(db, newsArticles);
 
     // hasDetailをtrueに更新する
     const hasDetailArticles = (
       await Promise.all(
-        articleDetails.map((articleDetail) => articleDetail.article.get()),
+        newsArticles.map((newsArticle) => newsArticle.article.get()),
       )
     ).map((article) => ({
       ...(article.data() as HeadlineArticle),
