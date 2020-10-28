@@ -55,6 +55,7 @@ export const crawlNewsArticle = async (
   const articleRef = headlineArticleStore.getRefById(db, headline.id);
 
   const newsArticle: NewsArticle = {
+    id: headline.id,
     title: headline.title,
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
@@ -62,7 +63,7 @@ export const crawlNewsArticle = async (
     article: articleRef,
     publisher: headline.publisher,
     wordExtracted: false,
-    wikipediaAssociated: false,
+    wordAssociated: false,
     createdAt: null,
     updatedAt: null,
   };

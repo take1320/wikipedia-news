@@ -9,6 +9,8 @@ export const fetchContentByTitle = async (
   // TODO:titleの入力チェック・書こう
   if (!title) throw new Error('title is empty');
 
+  console.log('fetchContentByTitle:' + title);
+
   const queries = new URLSearchParams();
 
   queries.set('action', 'query');

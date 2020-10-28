@@ -12,6 +12,9 @@ export const extractWords = async (
     (nown) =>
       ({
         id: nown.surface_form,
+        newsArticleId: newsArticle.id,
+        url: null,
+        isAssociated: false,
         createdAt: firestore.FieldValue.serverTimestamp(),
         updatedAt: firestore.FieldValue.serverTimestamp(),
       } as ArticleWord),

@@ -3,7 +3,7 @@ import { Publisher } from './publisher';
 import { HeadlineArticle } from './headline-articles';
 
 export type NewsArticle = {
-  id?: string;
+  id: string;
   title: string;
   text: string;
   rawText: string | null;
@@ -11,7 +11,7 @@ export type NewsArticle = {
   article: firestore.DocumentReference<HeadlineArticle>;
   publisher: firestore.DocumentReference<Publisher>;
   wordExtracted: boolean;
-  wikipediaAssociated: boolean;
+  wordAssociated: boolean;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
 };

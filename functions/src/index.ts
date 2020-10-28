@@ -7,6 +7,7 @@ const functionMap = {
   crawlArticles: './functions/crawl-articles',
   extractArticleWords: './functions/extract-article-words',
   fetchWikipedia: './functions/fetch-wikipedia',
+  fetchWikipediaForNews: './functions/fetch-wikipedia-for-news',
 };
 
 const loadFunctions = (fnMap: typeof functionMap) => {
