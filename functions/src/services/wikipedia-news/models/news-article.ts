@@ -1,12 +1,17 @@
 import { firestore } from 'firebase-admin';
 import { Publisher } from './publisher';
+import { HeadlineArticle } from './headline-articles';
 
-export type Article = {
-  id?: string;
+export type NewsArticle = {
+  id: string;
   title: string;
+  text: string;
+  rawText: string | null;
   url: string;
+  article: firestore.DocumentReference<HeadlineArticle>;
   publisher: firestore.DocumentReference<Publisher>;
-  hasDetail: boolean;
+  wordExtracted: boolean;
+  wordAssociated: boolean;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
 };

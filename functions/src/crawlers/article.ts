@@ -1,19 +1,20 @@
 import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 
-import { Article } from '../services/w-news/models/article';
-import { Publisher } from '../services/w-news/models/publisher';
-import { ArticleDetail } from '../services/w-news/models/article-detail';
-import { hasPublisherSelector } from '../firestore-admin/article';
+import * as headlineArticleStore from '../firestore-admin/headline-article';
+import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
+import { Publisher } from '../services/wikipedia-news/models/publisher';
+import { NewsArticle } from '../services/wikipedia-news/models/news-article';
 
-export const crawlArticleDetail = async (
+export const crawlNewsArticle = async (
   page: puppeteer.Page,
-  article: Article,
-): Promise<ArticleDetail> => {
-  console.log('article:' + article.title);
+  db: admin.firestore.Firestore,
+  headline: HeadlineArticle,
+): Promise<NewsArticle> => {
+  console.log('article:' + headline.title);
 
   const publisher: Publisher = (
-    await article.publisher.get()
+    await headline.publisher.get()
   ).data() as Publisher;
 
   if (!publisher.selector) {
@@ -21,7 +22,7 @@ export const crawlArticleDetail = async (
   }
 
   // 本文のクローリング
-  await page.goto(article.url, { waitUntil: 'domcontentloaded' });
+  await page.goto(headline.url, { waitUntil: 'domcontentloaded' });
 
   const rawTexts = await page.evaluate((selector) => {
     const list = Array.from(document.querySelectorAll(selector));
@@ -51,28 +52,36 @@ export const crawlArticleDetail = async (
     return removeDoubleReturn;
   };
 
-  const articleDetail: ArticleDetail = {
-    title: article.title,
+  const articleRef = headlineArticleStore.getRefById(db, headline.id);
+
+  const newsArticle: NewsArticle = {
+    id: headline.id,
+    title: headline.title,
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
     url: url,
-    publisher: article.publisher,
+    article: articleRef,
+    publisher: headline.publisher,
+    wordExtracted: false,
+    wordAssociated: false,
     createdAt: null,
     updatedAt: null,
   };
 
-  return articleDetail;
+  return newsArticle;
 };
 
 export const extractCrawlableArticles = async (
   db: admin.firestore.Firestore,
-  articles: Article[],
-): Promise<Article[]> => {
-  const crawlable: Article[] = [];
+  articles: HeadlineArticle[],
+): Promise<HeadlineArticle[]> => {
+  const crawlableArtiles: HeadlineArticle[] = [];
 
   for (const article of articles) {
-    const hasSelector = await hasPublisherSelector(db, article);
-    if (hasSelector) crawlable.push(article);
+    const hasSelector = await headlineArticleStore.hasPublisherSelector(
+      article,
+    );
+    if (hasSelector) crawlableArtiles.push(article);
   }
-  return crawlable;
+  return crawlableArtiles;
 };

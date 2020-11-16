@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { collectionName } from '../services/w-news/constants';
+import { collectionName } from '../services/wikipedia-news/constants';
 
 export const addCounter = async (
   db: admin.firestore.Firestore,
