@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../App.css';
 
-import { Article } from 'services/w-news/models/articles';
+import { Article } from 'services/wikipedia-news/models/articles';
 import ListLoader from 'components/common/atomos/ListLoader';
 import ArticleList from 'components/common/list/ArticleList';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Article } from 'services/w-news/models/articles';
+import { Article } from 'services/wikipedia-news/models/articles';
 import ArticleItem from 'components/common/item/ArticleItem';
 
 const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {

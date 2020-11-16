@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Item, List } from 'semantic-ui-react';
 
-import { Article } from 'services/w-news/models/articles';
+import { Article } from 'services/wikipedia-news/models/articles';
 
 const ArticleItem: FC<{ article: Article }> = ({ article }) => (
   <Item.Group>

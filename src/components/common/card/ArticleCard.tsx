@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Button, Card } from 'semantic-ui-react';
 
-import { Article } from 'services/w-news/models/articles';
+import { Article } from 'services/wikipedia-news/models/articles';
 
 const ArticleCard: FC<{ article: Article }> = ({ article }) => (
   <Card.Group>

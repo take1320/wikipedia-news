@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { Article } from 'services/w-news/models/articles';
-import { collectionName } from 'services/w-news/constants';
+import { Article } from 'services/wikipedia-news/models/articles';
+import { collectionName } from 'services/wikipedia-news/constants';
 import { FirebaseContext } from 'contexts';
 
 type ArticlesOptions = {
