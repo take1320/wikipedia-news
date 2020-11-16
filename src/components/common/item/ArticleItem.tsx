@@ -11,7 +11,7 @@ const ArticleItem: FC<{ article: Article }> = ({ article }) => (
           <Item.Header>{article.title}</Item.Header>
         </a>
         <Item.Meta>
-          <span className="publisher">NHKニュース</span>
+          <span className="publisher">Testニュース</span>
           <span className="publishedAt">2020/07/01公開</span>
         </Item.Meta>
 
@@ -21,11 +21,11 @@ const ArticleItem: FC<{ article: Article }> = ({ article }) => (
             <List.Content>
               <List.Header>
                 <a
-                  href="https://ja.wikipedia.org/wiki/%E4%BA%AC%E9%83%BD%E3%82%A2%E3%83%8B%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E6%94%BE%E7%81%AB%E6%AE%BA%E4%BA%BA%E4%BA%8B%E4%BB%B6"
+                  href="https://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  京都アニメーション放火殺人事件
+                  日本（テスト用記事）
                 </a>
               </List.Header>
               <List.Description>参照数: 5</List.Description>
@@ -33,8 +33,8 @@ const ArticleItem: FC<{ article: Article }> = ({ article }) => (
                 <List.Item>
                   <List.Icon name="book" />
                   <List.Content>
-                    <List.Header>site</List.Header>
-                    <List.Description>Your site's theme</List.Description>
+                    <List.Header>Header</List.Header>
+                    <List.Description>Description</List.Description>
                   </List.Content>
                 </List.Item>
               </List.List>
