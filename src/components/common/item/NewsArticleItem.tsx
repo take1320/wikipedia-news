@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Item, List } from 'semantic-ui-react';
 
-import { Article } from 'services/wikipedia-news/models/articles';
+import { NewsArticle } from 'services/wikipedia-news/models/news-article';
 
-const ArticleItem: FC<{ article: Article }> = ({ article }) => (
+const NewsArticleItem: FC<{ newsArticle: NewsArticle }> = ({ newsArticle }) => (
   <Item.Group>
     <Item>
       <Item.Content>
-        <a href={article.url} rel="noopener noreferrer" target="_blank">
-          <Item.Header>{article.title}</Item.Header>
+        <a href={newsArticle.url} rel="noopener noreferrer" target="_blank">
+          <Item.Header>{newsArticle.title}</Item.Header>
         </a>
         <Item.Meta>
           <span className="publisher">Testニュース</span>
@@ -48,4 +48,4 @@ const ArticleItem: FC<{ article: Article }> = ({ article }) => (
 //   return <div>{article.title}</div>;
 // };
 
-export default ArticleItem;
+export default NewsArticleItem;
