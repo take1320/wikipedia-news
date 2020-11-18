@@ -35,6 +35,7 @@ const useNewsArticles = (options?: ArticlesOptions) => {
           ...(doc.data() as NewsArticle),
           id: doc.id,
         }));
+        console.log('articlesData:');
         console.log(articlesData);
         setNewsArticles(articlesData);
         setError(null);

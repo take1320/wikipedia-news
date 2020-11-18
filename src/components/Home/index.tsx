@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Articles from 'containers/Home/NewsArticles';
+import Articles from 'containers/Home/Articles';
 
 const Home: React.FC = () => (
   <main>
