@@ -46,7 +46,7 @@ const useArticles = (options?: ArticlesOptions) => {
             .collection(collectionName.newsArticles)
             .doc(newsArticle.article.id)
             .collection(collectionName.articleWords)
-            .orderBy('createdAt', 'desc')
+            .where('url', '!=', '')
             .get();
 
           articles.push({
