@@ -1,23 +1,21 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import { Article } from 'services/w-news/models/articles';
+import { Article } from 'services/wikipedia-news/models/article';
 import ArticleItem from 'components/common/item/ArticleItem';
 
-const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {
-  const ListWrapper = styled.div`
-    margin: 1rem 0.5rem;
+const ListWrapper = styled.div`
+    margin: 1.5rem 0.5rem;
   `;
 
-  console.log(articles);
-
-  return (
+const NewsArticleList: React.FC<{ articles: Article[] }> = ({ articles }) =>
+  (
     <ListWrapper>
       {articles.map((article) => (
-        <ArticleItem article={article} key={article.title} />
+        <ArticleItem article={article} key={article.newsArticle.title} />
       ))}
     </ListWrapper>
   );
-};
+;
 
-export default ArticleList;
+export default NewsArticleList;

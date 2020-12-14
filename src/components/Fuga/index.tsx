@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { HogeContext, FirebaseContext } from '../../contexts';
-import { collectionName } from '../../services/w-news/constants';
-import { Article } from '../../services/w-news/models/articles';
+import { collectionName } from '../../services/wikipedia-news/constants';
+import { Article } from '../../services/wikipedia-news/models/articles';
 
 const Fuga: React.FC = () => {
   const hoge = useContext(HogeContext);

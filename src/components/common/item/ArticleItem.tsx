@@ -1,51 +1,37 @@
 import React, { FC } from 'react';
-import { Item, List } from 'semantic-ui-react';
+import styled from '@emotion/styled';
+import { List, Segment } from 'semantic-ui-react';
 
-import { Article } from 'services/w-news/models/articles';
+import { Article } from 'services/wikipedia-news/models/article';
+import ArticleWordItem from 'components/common/item/ArticleWordItem';
+
+const WORD_DISPLAY_SIZE = 5;
+const ArticleWrapper = styled.div`
+    margin: 1rem 0;
+  `;
 
 const ArticleItem: FC<{ article: Article }> = ({ article }) => (
-  <Item.Group>
-    <Item>
-      <Item.Content>
-        <a href={article.url} rel="noopener noreferrer" target="_blank">
-          <Item.Header>{article.title}</Item.Header>
+  <ArticleWrapper>
+    <Segment attached="top">
+      <div>
+        <a
+          href={article.newsArticle.url}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {article.newsArticle.title}
         </a>
-        <Item.Meta>
-          <span className="publisher">NHKニュース</span>
-          <span className="publishedAt">2020/07/01公開</span>
-        </Item.Meta>
-
-        <List>
-          <List.Item>
-            <List.Icon name="book" />
-            <List.Content>
-              <List.Header>
-                <a
-                  href="https://ja.wikipedia.org/wiki/%E4%BA%AC%E9%83%BD%E3%82%A2%E3%83%8B%E3%83%A1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E6%94%BE%E7%81%AB%E6%AE%BA%E4%BA%BA%E4%BA%8B%E4%BB%B6"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  京都アニメーション放火殺人事件
-                </a>
-              </List.Header>
-              <List.Description>参照数: 5</List.Description>
-              <List.List>
-                <List.Item>
-                  <List.Icon name="book" />
-                  <List.Content>
-                    <List.Header>site</List.Header>
-                    <List.Description>Your site's theme</List.Description>
-                  </List.Content>
-                </List.Item>
-              </List.List>
-            </List.Content>
-          </List.Item>
-        </List>
-      </Item.Content>
-    </Item>
-  </Item.Group>
+      </div>
+      <span>Testニュース</span>-<span>2020/07/01公開</span>
+    </Segment>
+    <Segment attached="bottom">
+      <List>
+        {article.articleWords.slice(0, WORD_DISPLAY_SIZE).map((word) => (
+          <ArticleWordItem articleWord={word} key={word.id} />
+        ))}
+      </List>
+    </Segment>
+  </ArticleWrapper>
 );
-//   return <div>{article.title}</div>;
-// };
 
 export default ArticleItem;

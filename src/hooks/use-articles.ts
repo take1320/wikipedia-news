@@ -1,8 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { Article } from 'services/w-news/models/articles';
-import { collectionName } from 'services/w-news/constants';
+import { Article } from 'services/wikipedia-news/models/article';
+import { NewsArticle } from 'services/wikipedia-news/models/news-article';
+import { collectionName } from 'services/wikipedia-news/constants';
 import { FirebaseContext } from 'contexts';
+import { ArticleWord } from 'services/wikipedia-news/models/article-word';
 
 type ArticlesOptions = {
   limit?: number;
@@ -21,25 +23,45 @@ const useArticles = (options?: ArticlesOptions) => {
 
   useEffect(() => {
     const { db } = firebaseRef.current;
-    if (!db) throw new Error('Firestore is not initialized');
-    const query = db
-      .collection(collectionName.articles)
-      .orderBy('createdAt', 'asc')
-      .limit(optionsRef.current.limit);
+    if (!db) throw new Error('irestore is not initialized');
 
     const load = async () => {
       setLoading(true);
       try {
-        const snap = await query.get();
-        const articlesData = snap.docs.map((doc) => ({
-          ...(doc.data() as Article),
-          id: doc.id,
-        }));
-        console.log('hogehoge');
-        console.log(articlesData);
-        setArticles(articlesData);
+        const snap = await db
+          .collection(collectionName.newsArticles)
+          .where('wordAssociated', '==', true)
+          .orderBy('createdAt', 'desc')
+          .limit(optionsRef.current.limit)
+          .get();
+
+        const newsArticles: NewsArticle[] = snap.docs.map(
+          (doc) => doc.data() as NewsArticle,
+        );
+
+        const articles: Article[] = [];
+
+        for await (const newsArticle of newsArticles) {
+          const snap = await db
+            .collection(collectionName.newsArticles)
+            .doc(newsArticle.article.id)
+            .collection(collectionName.articleWords)
+            .where('url', '!=', '')
+            .get();
+
+          articles.push({
+            newsArticle,
+            articleWords: snap.docs.map((doc) => doc.data() as ArticleWord),
+          });
+        }
+
+        console.log('articles:');
+        console.log(articles);
+        setArticles(articles);
         setError(null);
       } catch (err) {
+        console.log('set error');
+        console.log(err);
         setError(err);
       }
       setLoading(false);
