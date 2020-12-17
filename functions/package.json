@@ -7,6 +7,7 @@
     "dbseed:publishers": "node lib/commands/db-seed.js publishers seeds/publishers.tsv",
     "dbexport:publishers": "node lib/commands/db-export.js publishers",
     "dbexport:articles": "node lib/commands/db-export.js articles",
+    "truncate-auth": "node lib/commands/truncate-auth.js",
     "build": "npm run lint && tsc",
     "serve": "yarn build && GOOGLE_APPLICATION_CREDENTIALS=./src/wikipedia-news-firebase-adminsdk.json firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",

@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from 'react';
+import { FirebaseContext } from 'contexts';
 
 import { Article } from 'services/wikipedia-news/models/article';
 import { NewsArticle } from 'services/wikipedia-news/models/news-article';
 import { collectionName } from 'services/wikipedia-news/constants';
-import { FirebaseContext } from 'contexts';
 import { ArticleWord } from 'services/wikipedia-news/models/article-word';
 
 type ArticlesOptions = {
