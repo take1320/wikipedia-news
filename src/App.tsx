@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useContext, useRef } from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 import { useCookies } from 'react-cookie';
 import { v4 as uuidv4 } from 'uuid';
+import { FirebaseContext } from 'contexts';
 
 import BasicHeader from 'components/common/header/BasicHeader';
 import BasicFooter from 'components/common/footer/BasicFooter';
@@ -10,8 +11,11 @@ import Home from 'containers/Home/Articles';
 import Fuga from 'components/Fuga';
 
 const App: FC = () => {
-
   const [cookies, setCookie] = useCookies(['id']);
+  const firebaseRef = useRef(useContext(FirebaseContext));
+
+  const { db } = firebaseRef.current;
+  if (!db) throw new Error('irestore is not initialized');
 
   // const initialize = async (id: string) => {
   //   console.log(id);
@@ -35,8 +39,7 @@ const App: FC = () => {
       </Switch>
       <BasicFooter />
     </div>
-  )
-}
-  ;
+  );
+};
 
 export default App;
