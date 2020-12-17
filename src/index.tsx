@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import firebase from 'firebase';
-import { CookiesProvider } from 'react-cookie';
 
 import './index.css';
 import 'semantic-ui-css/semantic.min.css';
@@ -19,11 +18,9 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <FirebaseApp>
-        <CookiesProvider>
-          <HogeContext.Provider value="piyo">
-            <App />
-          </HogeContext.Provider>
-        </CookiesProvider>
+        <HogeContext.Provider value="piyo">
+          <App />
+        </HogeContext.Provider>
       </FirebaseApp>
     </BrowserRouter>
   </React.StrictMode>,
