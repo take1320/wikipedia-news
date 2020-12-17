@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import firebase from 'firebase';
+import { User } from './services/wikipedia-news/models/user';
 
 export const HogeContext = createContext<string>('hoge');
 
@@ -14,8 +15,7 @@ export const FirebaseContext = createContext<FirebaseContextValue>({
 });
 
 type UserContextValue = {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  user: Object | null;
+  user: User | null;
 };
 
 export const UserContext = createContext<UserContextValue>({

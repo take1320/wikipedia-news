@@ -1,12 +1,22 @@
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import { Menu, Container } from 'semantic-ui-react';
 
-const BasicHeader: FC = () => (
-  <Menu borderless>
-    <Container text>
-      <Menu.Item header>Wikipedia in news</Menu.Item>
-    </Container>
-  </Menu>
-);
+import { UserContext } from '../../../contexts';
 
+const BasicHeader: FC = () => {
+  const hoge = useContext(UserContext);
+  console.log(hoge);
+  return (
+    <Menu borderless>
+      <Container text>
+        <Menu.Item header>Wikipedia in news</Menu.Item>
+        <button
+          onClick={() => {
+            alert('hoge' + hoge.user?.name);
+          }}
+        />
+      </Container>
+    </Menu>
+  );
+};
 export default BasicHeader;
