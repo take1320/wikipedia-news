@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Switch, Route, Redirect } from 'react-router';
-import { useCookies } from "react-cookie";
+import { useCookies } from 'react-cookie';
+import { v4 as uuidv4 } from 'uuid';
 
 import BasicHeader from 'components/common/header/BasicHeader';
 import BasicFooter from 'components/common/footer/BasicFooter';
@@ -12,16 +13,15 @@ const App: FC = () => {
 
   const [cookies, setCookie] = useCookies(['id']);
 
-  const initialize = (id: string) => {
-    console.log(id);
-  };
+  // const initialize = async (id: string) => {
+  //   console.log(id);
+  // };
 
   // 初期処理
   if (!cookies.id) {
-    const sampleId = 'sample';
-    setCookie('id', sampleId, { path: '/' });
+    const id = uuidv4();
+    setCookie('id', id, { path: '/' });
     console.log('cookies');
-    initialize(sampleId);
   }
 
   return (
