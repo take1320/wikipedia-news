@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Segment, Container, Grid, Header, List } from 'semantic-ui-react';
+import { Segment, Container, Header } from 'semantic-ui-react';
 
 const BasicFooter: FC = () => (
   <Segment vertical >
