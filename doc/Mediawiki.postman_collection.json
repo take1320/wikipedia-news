@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "f0c54e34-251d-44de-9325-5bc2fc5e6d68",
+		"name": "Mediawiki",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ja.wikipedia.org/w/api.php?action=query&format=json&redirects=1&exchars=300&explaintext=1&titles=レッド&inprop=url&prop=info",
+					"protocol": "https",
+					"host": [
+						"ja",
+						"wikipedia",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "query"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "prop",
+							"value": "extracts",
+							"disabled": true
+						},
+						{
+							"key": "redirects",
+							"value": "1"
+						},
+						{
+							"key": "exchars",
+							"value": "300"
+						},
+						{
+							"key": "explaintext",
+							"value": "1"
+						},
+						{
+							"key": "titles",
+							"value": "レッド"
+						},
+						{
+							"key": "inprop",
+							"value": "url"
+						},
+						{
+							"key": "prop",
+							"value": "info"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ja.wikipedia.org/w/api.php?action=query&format=json&redirects=1&exchars=300&explaintext=1&titles=GONZO&inprop=url&prop=info|extracts&formatversion=2",
+					"protocol": "https",
+					"host": [
+						"ja",
+						"wikipedia",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "query"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "prop",
+							"value": "extracts",
+							"disabled": true
+						},
+						{
+							"key": "redirects",
+							"value": "1"
+						},
+						{
+							"key": "exchars",
+							"value": "300"
+						},
+						{
+							"key": "explaintext",
+							"value": "1"
+						},
+						{
+							"key": "titles",
+							"value": "GONZO"
+						},
+						{
+							"key": "inprop",
+							"value": "url"
+						},
+						{
+							"key": "prop",
+							"value": "info|extracts"
+						},
+						{
+							"key": "formatversion",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
