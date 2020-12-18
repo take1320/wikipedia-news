@@ -2,14 +2,13 @@ import React, { FC } from 'react';
 import { Segment, Container, Header } from 'semantic-ui-react';
 
 const BasicFooter: FC = () => (
-  <Segment vertical >
+  <Segment vertical>
     <Container>
-      <Header as='h4'>
-        Footer Header
-        </Header>
+      <Header as="h4">Footer Header</Header>
       <p>
-        Extra space for a call to action inside the footer that could help re-engage users.
-        </p>
+        Extra space for a call to action inside the footer that could help
+        re-engage users.
+      </p>
     </Container>
   </Segment>
 );
