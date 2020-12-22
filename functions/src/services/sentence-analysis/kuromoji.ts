@@ -41,3 +41,6 @@ export const extractNoun = (texts: IpadicFeatures[]): IpadicFeatures[] => {
       )
   );
 };
+
+export const extractNounsFromText = async (text: string): Promise<string[]> =>
+  extractNoun(await torknize(text)).map((nown) => nown.surface_form);

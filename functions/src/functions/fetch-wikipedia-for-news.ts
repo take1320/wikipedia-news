@@ -4,11 +4,12 @@ import admin from 'firebase-admin';
 import * as wikipediaArticleStore from '../firestore-admin/wikipedia-article';
 import * as articleWordStore from '../firestore-admin/article-word';
 import * as newsArticleStore from '../firestore-admin/news-article';
-import { organizeContent } from '../services/wikipedia-news/wikipedia';
+import { organizeContent } from '../services/wikipedia-api/content';
 import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-article';
 import { fetchContentByTitle } from '../services/wikipedia-api/wikipedia-api';
 import { ArticleWord } from '../services/wikipedia-news/models/article-word';
 import { NewsArticle } from '../services/wikipedia-news/models/news-article';
+import sleep from '../utils/await-sleep';
 
 module.exports = functions
   .region('asia-northeast1')
@@ -82,5 +83,3 @@ module.exports = functions
 
     res.send('ok');
   });
-
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));

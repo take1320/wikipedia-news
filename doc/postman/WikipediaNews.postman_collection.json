@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "84c1753a-f2b6-42bb-a81e-25fa77f517dc",
+		"name": "WikipediaNews",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "fetchHeadlines",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/wikipedia-news/asia-northeast1/fetchHeadlines",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"wikipedia-news",
+						"asia-northeast1",
+						"fetchHeadlines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "crawlArticles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/wikipedia-news/asia-northeast1/crawlArticles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"wikipedia-news",
+						"asia-northeast1",
+						"crawlArticles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "extractArticleWords",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/wikipedia-news/asia-northeast1/extractArticleWords",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"wikipedia-news",
+						"asia-northeast1",
+						"extractArticleWords"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchWikipedia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/wikipedia-news/asia-northeast1/fetchWikipedia",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"wikipedia-news",
+						"asia-northeast1",
+						"fetchWikipedia"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetchWikipediaForNews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/wikipedia-news/asia-northeast1/fetchWikipediaForNews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"wikipedia-news",
+						"asia-northeast1",
+						"fetchWikipediaForNews"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

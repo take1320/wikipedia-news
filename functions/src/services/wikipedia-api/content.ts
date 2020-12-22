@@ -1,4 +1,4 @@
-import { WikipediaContent } from '../wikipedia-api/models/wikipedia-content';
+import { WikipediaContent } from './models/wikipedia-content';
 
 interface OrganizedContent {
   isMissing: boolean;

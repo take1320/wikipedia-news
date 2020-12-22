@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "8726acd6-a7f6-4ef1-aa58-c0cd9ee4d55a",
+		"name": "Mediawiki",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ja.wikipedia.org/w/api.php?action=query&format=json&redirects=1&exchars=300&explaintext=1&titles=レッド&inprop=url&prop=info",
+					"protocol": "https",
+					"host": [
+						"ja",
+						"wikipedia",
+						"org"
+					],
+					"path": [
+						"w",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "query"
+						},
+						{
+							"key": "format",
+							"value": "json"
+						},
+						{
+							"key": "prop",
+							"value": "extracts",
+							"disabled": true
+						},
+						{
+							"key": "redirects",
+							"value": "1"
+						},
+						{
+							"key": "exchars",
+							"value": "300"
+						},
+						{
+							"key": "explaintext",
+							"value": "1"
+						},
+						{
+							"key": "titles",
+							"value": "レッド"
+						},
+						{
+							"key": "inprop",
+							"value": "url"
+						},
+						{
+							"key": "prop",
+							"value": "info"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

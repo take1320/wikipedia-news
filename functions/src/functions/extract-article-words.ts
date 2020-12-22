@@ -1,11 +1,13 @@
 import * as functions from 'firebase-functions';
-import admin from 'firebase-admin';
+import admin, { firestore } from 'firebase-admin';
 
 import * as newsArticleStore from '../firestore-admin/news-article';
 import * as articleWordStore from '../firestore-admin/article-word';
 import * as wikipediaArticleStore from '../firestore-admin/wikipedia-article';
-import { extractWords } from '../services/wikipedia-news/article';
 import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-article';
+import { extractNounsFromText } from '../services/sentence-analysis/kuromoji';
+import { ArticleWord } from '../services/wikipedia-news/models/article-word';
+import sleep from '../utils/await-sleep';
 
 module.exports = functions
   .region('asia-northeast1')
@@ -15,7 +17,17 @@ module.exports = functions
     const details = await newsArticleStore.findNotWordExtracted(db);
     for await (const detail of details) {
       console.log('--- --- detail.title: ' + detail.title);
-      const words = await extractWords(detail);
+      const words = (await extractNounsFromText(detail.text)).map((nown) => {
+        return {
+          id: nown,
+          newsArticleId: detail.id,
+          url: null,
+          isAssociated: false,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+        } as ArticleWord;
+      });
+
       const wikipediaArticles = words.map(
         (w) =>
           ({
@@ -43,5 +55,3 @@ module.exports = functions
     res.send('hoge');
     console.log('--- end articleExtractWords');
   });
-
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));

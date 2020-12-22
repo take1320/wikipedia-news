@@ -44,7 +44,7 @@ const useArticles = (options?: ArticlesOptions) => {
         for await (const newsArticle of newsArticles) {
           const snap = await db
             .collection(collectionName.newsArticles)
-            .doc(newsArticle.article.id)
+            .doc(newsArticle.id)
             .collection(collectionName.articleWords)
             .where('url', '!=', '')
             .get();

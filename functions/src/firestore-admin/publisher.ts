@@ -24,11 +24,14 @@ export const bulkCreate = async (
   }
 };
 
-export const findPublisherRef = (
+export const findById = async (
   db: firestore.Firestore,
-  name: string,
-): firestore.DocumentReference<Publisher> => {
-  return db
-    .collection(collectionName.publishers)
-    .doc(name) as firestore.DocumentReference<Publisher>;
+  id: string,
+): Promise<Publisher> => {
+  const snap = await db.collection(collectionName.publishers).doc(id).get();
+  const result = snap.data() as Publisher;
+
+  if (result === undefined) throw new Error('id not found.');
+
+  return result;
 };
