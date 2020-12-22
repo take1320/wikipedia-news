@@ -1,4 +1,4 @@
-import { firestore } from 'firebase-admin';
+import { firestore } from 'firebase/app';
 
 export type ArticleWord = {
   id: string;

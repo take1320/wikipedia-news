@@ -1,4 +1,4 @@
-import { firestore } from 'firebase-admin';
+import { firestore } from 'firebase/app';
 import { HeadlineArticle } from './headline-articles';
 
 export type NewsArticle = {

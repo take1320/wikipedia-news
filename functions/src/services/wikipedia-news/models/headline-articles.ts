@@ -1,4 +1,4 @@
-import { firestore } from 'firebase-admin';
+import { firestore } from 'firebase/app';
 import { Publisher } from './publisher';
 
 export type HeadlineArticle = {
