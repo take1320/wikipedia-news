@@ -67,7 +67,7 @@ export const findNotSearched = async (
     .collection(collectionName.wikipediaArticles)
     .where('isSearched', '==', false)
     .orderBy('createdAt', 'asc')
-    .limit(3)
+    .limit(20)
     .get();
 
   const wikipediaArticles: WikipediaArticle[] = [];
