@@ -92,7 +92,7 @@ export const crawlNewsArticle = async (
   return newsArticle;
 };
 
-export const extractCrawlableArticles = (
+export const extractCrawlableHeadlines = (
   articles: HeadlineArticle[],
 ): HeadlineArticle[] =>
   articles.filter((article) => article.publisher.selector);

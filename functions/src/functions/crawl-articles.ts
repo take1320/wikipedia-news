@@ -5,7 +5,7 @@ import * as headlineArticleStore from '../firestore-admin/headline-article';
 import * as newsArticleStore from '../firestore-admin/news-article';
 import {
   crawlNewsArticle,
-  extractCrawlableArticles,
+  extractCrawlableHeadlines,
 } from '../crawlers/article';
 
 module.exports = functions
@@ -18,14 +18,14 @@ module.exports = functions
     const db = admin.firestore();
 
     // クローリング可能な記事の絞り込み
-    const articles = await headlineArticleStore.findNoDetails(db);
-    const crawlableArticles = extractCrawlableArticles(articles);
-    console.log('crawlableArticles:' + crawlableArticles.length);
+    const articles = await headlineArticleStore.findByHasDetail(db, false);
+    const crawlableHeadlines = extractCrawlableHeadlines(articles);
+    console.log('crawlableHeadlines:' + crawlableHeadlines.length);
 
     // ニュース記事を取得する
     const newsArticles = [];
-    for await (const crawlableArticle of crawlableArticles) {
-      newsArticles.push(await crawlNewsArticle(db, crawlableArticle));
+    for await (const crawlableArticle of crawlableHeadlines) {
+      newsArticles.push(await crawlNewsArticle(crawlableArticle));
     }
     console.log('newsArticles:' + newsArticles.length);
     await newsArticleStore.bulkCreate(db, newsArticles);

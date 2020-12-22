@@ -18,12 +18,13 @@ export const bulkCreate = async (
   }
 };
 
-export const findNoDetails = async (
+export const findByHasDetail = async (
   db: admin.firestore.Firestore,
+  hasDetail: boolean,
 ): Promise<HeadlineArticle[]> => {
   const snap = await db
     .collection(collectionName.headlineArticles)
-    .where('hasDetail', '==', false)
+    .where('hasDetail', '==', hasDetail)
     .orderBy('createdAt', 'desc')
     .limit(30)
     .get();
