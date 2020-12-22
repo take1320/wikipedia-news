@@ -4,6 +4,7 @@ import { List, Segment, Divider } from 'semantic-ui-react';
 
 import { Article } from 'services/wikipedia-news/models/article';
 import ArticleWordItem from 'components/common/item/ArticleWordItem';
+import { fromNow } from 'utls/date';
 
 const WORD_DISPLAY_SIZE = 5;
 
@@ -34,7 +35,10 @@ const ArticleItem: FC<{ article: Article }> = ({ article }) => (
           {article.newsArticle.title}
         </TitleAnker>
       </div>
-      <span>Testニュース</span>-<span>2020/07/01公開</span>
+      <span>{article.newsArticle.headlineArticle.publisher.name}</span>-
+      <span>
+        {fromNow(article.newsArticle.headlineArticle.publishedAt.toDate())}
+      </span>
       <Divider />
       <List>
         {article.articleWords.slice(0, WORD_DISPLAY_SIZE).map((word) => (
