@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
 import * as wikipediaArticleStore from '../firestore-admin/wikipedia-article';
-import { organizeContent } from '../services/wikipedia-news/wikipedia';
+import { organizeContent } from '../services/wikipedia-api/content';
 import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-article';
 import { fetchContentByTitle } from '../services/wikipedia-api/wikipedia-api';
 
