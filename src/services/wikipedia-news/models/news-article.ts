@@ -1,5 +1,4 @@
 import { firestore } from 'firebase/app';
-import { Publisher } from './publisher';
 import { HeadlineArticle } from './headline-articles';
 
 export type NewsArticle = {
@@ -8,8 +7,7 @@ export type NewsArticle = {
   text: string;
   rawText: string | null;
   url: string;
-  article: firestore.DocumentReference<HeadlineArticle>;
-  publisher: firestore.DocumentReference<Publisher>;
+  headlineArticle: HeadlineArticle;
   wordExtracted: boolean;
   wordAssociated: boolean;
   createdAt: firestore.Timestamp | null;
