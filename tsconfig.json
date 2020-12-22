@@ -18,8 +18,7 @@
     "isolatedModules": true,
     "jsx": "react",
     "baseUrl": "src",
-    "incremental": true,
-    "noEmit": true
+    "incremental": true
   },
   "include": [
     "src"
