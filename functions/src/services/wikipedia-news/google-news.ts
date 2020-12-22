@@ -18,6 +18,7 @@ export const toHeadlineArticles = async (
       title: gNArticle.title,
       url: gNArticle.link,
       publisher: publisher,
+      publishedAt: firestore.Timestamp.fromDate(new Date(gNArticle.published)),
       hasDetail: false,
       createdAt: null,
       updatedAt: null,
