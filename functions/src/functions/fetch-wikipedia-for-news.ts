@@ -9,6 +9,7 @@ import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-ar
 import { fetchContentByTitle } from '../services/wikipedia-api/wikipedia-api';
 import { ArticleWord } from '../services/wikipedia-news/models/article-word';
 import { NewsArticle } from '../services/wikipedia-news/models/news-article';
+import sleep from '../utils/await-sleep';
 
 module.exports = functions
   .region('asia-northeast1')
@@ -82,5 +83,3 @@ module.exports = functions
 
     res.send('ok');
   });
-
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));

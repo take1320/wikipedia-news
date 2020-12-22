@@ -7,6 +7,7 @@ import * as wikipediaArticleStore from '../firestore-admin/wikipedia-article';
 import { WikipediaArticle } from '../services/wikipedia-news/models/wikipedia-article';
 import { extractNounsFromText } from '../services/sentence-analysis/kuromoji';
 import { ArticleWord } from '../services/wikipedia-news/models/article-word';
+import sleep from '../utils/await-sleep';
 
 module.exports = functions
   .region('asia-northeast1')
@@ -54,5 +55,3 @@ module.exports = functions
     res.send('hoge');
     console.log('--- end articleExtractWords');
   });
-
-const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
