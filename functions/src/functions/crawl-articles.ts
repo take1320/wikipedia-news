@@ -51,7 +51,7 @@ module.exports = functions
     // hasDetailをtrueに更新する
     const hasDetailArticles = (
       await Promise.all(
-        newsArticles.map((newsArticle) => newsArticle.article.get()),
+        newsArticles.map((newsArticle) => newsArticle.articleRef.get()),
       )
     ).map((article) => ({
       ...(article.data() as HeadlineArticle),

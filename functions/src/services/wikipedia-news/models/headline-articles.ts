@@ -5,7 +5,9 @@ export type HeadlineArticle = {
   id: string;
   title: string;
   url: string;
-  publisher: firestore.DocumentReference<Publisher>;
+  publisherRef: firestore.DocumentReference<Publisher>;
+  // TODO:命名はpublisherに変更予定
+  testPublisher: Publisher;
   hasDetail: boolean;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;

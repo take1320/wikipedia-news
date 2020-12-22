@@ -8,8 +8,8 @@ export type NewsArticle = {
   text: string;
   rawText: string | null;
   url: string;
-  article: firestore.DocumentReference<HeadlineArticle>;
-  publisher: firestore.DocumentReference<Publisher>;
+  articleRef: firestore.DocumentReference<HeadlineArticle>;
+  publisherRef: firestore.DocumentReference<Publisher>;
   wordExtracted: boolean;
   wordAssociated: boolean;
   createdAt: firestore.Timestamp | null;

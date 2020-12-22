@@ -14,7 +14,7 @@ export const crawlNewsArticle = async (
   console.log('article:' + headline.title);
 
   const publisher: Publisher = (
-    await headline.publisher.get()
+    await headline.publisherRef.get()
   ).data() as Publisher;
 
   if (!publisher.selector) {
@@ -60,8 +60,8 @@ export const crawlNewsArticle = async (
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
     url: url,
-    article: articleRef,
-    publisher: headline.publisher,
+    articleRef: articleRef,
+    publisherRef: headline.publisherRef,
     wordExtracted: false,
     wordAssociated: false,
     createdAt: null,

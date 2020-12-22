@@ -21,7 +21,7 @@ module.exports = functions
     const publishers = toPublishers(headlines.articles);
     await publisherStore.bulkCreate(db, publishers);
 
-    const articles = toHeadlineArticles(headlines.articles, db);
+    const articles = await toHeadlineArticles(headlines.articles, db);
     await headlineArticleStore.bulkCreate(db, articles);
 
     res.send('ok');

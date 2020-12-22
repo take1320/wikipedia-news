@@ -43,7 +43,7 @@ export const hasPublisherSelector = async (
   article: HeadlineArticle,
 ): Promise<boolean> => {
   const publisher: Publisher = (
-    await article.publisher.get()
+    await article.publisherRef.get()
   ).data() as Publisher;
 
   return publisher.selector !== null && publisher.selector !== '';

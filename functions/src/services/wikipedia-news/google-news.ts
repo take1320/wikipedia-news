@@ -2,32 +2,32 @@ import { firestore } from 'firebase-admin';
 import { Article as GNArticle } from '../rakuten-rapid-api/models/google-news';
 import { HeadlineArticle } from './models/headline-articles';
 import { Publisher } from './models/publisher';
-import { findPublisherRef } from '../../firestore-admin/publisher';
+import { findPublisherRef, findById } from '../../firestore-admin/publisher';
 
-export const toHeadlineArticle = (
-  gNArticle: GNArticle,
-  db: firestore.Firestore,
-): HeadlineArticle => {
-  const publisherRef = findPublisherRef(db, gNArticle.source.title);
-  if (!publisherRef) throw new Error('publisher not found');
-  return {
-    id: gNArticle.id,
-    title: gNArticle.title,
-    url: gNArticle.link,
-    publisher: publisherRef,
-    hasDetail: false,
-    createdAt: null,
-    updatedAt: null,
-  };
-};
-
-export const toHeadlineArticles = (
+export const toHeadlineArticles = async (
   gNArticles: GNArticle[],
   db: firestore.Firestore,
-): HeadlineArticle[] =>
-  gNArticles.map(
-    (gNArticle: GNArticle): HeadlineArticle => toHeadlineArticle(gNArticle, db),
-  );
+): Promise<HeadlineArticle[]> => {
+  const headlineArticles: HeadlineArticle[] = [];
+
+  for (const gNArticle of gNArticles) {
+    const publisherRef = findPublisherRef(db, gNArticle.source.title);
+    const testPublisher = await findById(db, gNArticle.source.title);
+
+    headlineArticles.push({
+      id: gNArticle.id,
+      title: gNArticle.title,
+      url: gNArticle.link,
+      publisherRef: publisherRef,
+      testPublisher: testPublisher,
+      hasDetail: false,
+      createdAt: null,
+      updatedAt: null,
+    });
+  }
+
+  return headlineArticles;
+};
 
 export const toPublisher = (gNArticle: GNArticle): Publisher => ({
   name: gNArticle.source.title,
