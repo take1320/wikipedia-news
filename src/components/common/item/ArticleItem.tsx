@@ -4,7 +4,7 @@ import { List, Segment, Divider } from 'semantic-ui-react';
 
 import { Article } from 'services/wikipedia-news/models/article';
 import ArticleWordItem from 'components/common/item/ArticleWordItem';
-import { fromNow } from 'utls/date';
+import { fromNow } from 'utils/date';
 
 const WORD_DISPLAY_SIZE = 5;
 
