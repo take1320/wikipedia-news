@@ -1,9 +1,6 @@
 import puppeteer from 'puppeteer';
-import admin from 'firebase-admin';
 
-import * as headlineArticleStore from '../firestore-admin/headline-article';
 import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
-import { Publisher } from '../services/wikipedia-news/models/publisher';
 import { NewsArticle } from '../services/wikipedia-news/models/news-article';
 
 const PUPPETEER_OPTIONS = {
@@ -20,16 +17,11 @@ const PUPPETEER_OPTIONS = {
 };
 
 export const crawlNewsArticle = async (
-  db: admin.firestore.Firestore,
   headline: HeadlineArticle,
 ): Promise<NewsArticle> => {
   console.log('article:' + headline.title);
 
-  const publisher: Publisher = (
-    await headline.publisherRef.get()
-  ).data() as Publisher;
-
-  if (!publisher.selector) {
+  if (!headline.publisher.selector) {
     throw new Error('selector is empty');
   }
 
@@ -49,7 +41,7 @@ export const crawlNewsArticle = async (
       console.log('inner evaluate');
       const list = Array.from(document.querySelectorAll(selector));
       return list.map((data) => data.textContent as string);
-    }, publisher.selector);
+    }, headline.publisher.selector);
 
     console.log('page.url');
     // URL（リダイレクト先）
@@ -82,16 +74,13 @@ export const crawlNewsArticle = async (
     return removeDoubleReturn;
   };
 
-  const articleRef = headlineArticleStore.getRefById(db, headline.id);
-
   const newsArticle: NewsArticle = {
     id: headline.id,
     title: headline.title,
     text: cleanText(rawTexts.join('\n')),
     rawText: rawTexts.join('\n'),
     url: url,
-    articleRef: articleRef,
-    publisherRef: headline.publisherRef,
+    headlineArticle: headline,
     wordExtracted: false,
     wordAssociated: false,
     createdAt: null,
@@ -103,17 +92,7 @@ export const crawlNewsArticle = async (
   return newsArticle;
 };
 
-export const extractCrawlableArticles = async (
-  db: admin.firestore.Firestore,
+export const extractCrawlableArticles = (
   articles: HeadlineArticle[],
-): Promise<HeadlineArticle[]> => {
-  const crawlableArtiles: HeadlineArticle[] = [];
-
-  for (const article of articles) {
-    const hasSelector = await headlineArticleStore.hasPublisherSelector(
-      article,
-    );
-    if (hasSelector) crawlableArtiles.push(article);
-  }
-  return crawlableArtiles;
-};
+): HeadlineArticle[] =>
+  articles.filter((article) => article.publisher.selector);

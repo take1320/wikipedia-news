@@ -2,7 +2,6 @@ import admin from 'firebase-admin';
 
 import { collectionName } from '../services/wikipedia-news/constants';
 import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
-import { Publisher } from '../services/wikipedia-news/models/publisher';
 
 export const bulkCreate = async (
   db: admin.firestore.Firestore,
@@ -39,16 +38,6 @@ export const findNoDetails = async (
   return articles;
 };
 
-export const hasPublisherSelector = async (
-  article: HeadlineArticle,
-): Promise<boolean> => {
-  const publisher: Publisher = (
-    await article.publisherRef.get()
-  ).data() as Publisher;
-
-  return publisher.selector !== null && publisher.selector !== '';
-};
-
 export const getRefById = (
   db: admin.firestore.Firestore,
   id: string,
@@ -56,4 +45,36 @@ export const getRefById = (
   return db
     .collection(collectionName.headlineArticles)
     .doc(id) as admin.firestore.DocumentReference<HeadlineArticle>;
+};
+
+export const findById = async (
+  db: admin.firestore.Firestore,
+  id: string,
+): Promise<HeadlineArticle> => {
+  const snap = await db
+    .collection(collectionName.headlineArticles)
+    .doc(id)
+    .get();
+  const result = snap.data() as HeadlineArticle;
+
+  if (result === undefined) throw new Error('id not found.');
+
+  return result;
+};
+
+export const updateHasDetail = async (
+  db: admin.firestore.Firestore,
+  id: string,
+  hasDetail: boolean,
+): Promise<void> => {
+  const currentValue = await findById(db, id);
+
+  await db
+    .collection(collectionName.headlineArticles)
+    .doc(id)
+    .set({
+      ...currentValue,
+      hasDetail,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    } as HeadlineArticle);
 };

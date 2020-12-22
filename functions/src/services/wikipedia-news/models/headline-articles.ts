@@ -5,7 +5,6 @@ export type HeadlineArticle = {
   id: string;
   title: string;
   url: string;
-  publisherRef: firestore.DocumentReference<Publisher>;
   publisher: Publisher;
   hasDetail: boolean;
   createdAt: firestore.Timestamp | null;

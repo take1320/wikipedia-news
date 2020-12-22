@@ -1,10 +1,8 @@
 import * as functions from 'firebase-functions';
 import admin from 'firebase-admin';
 
-import sleep from '../await-sleep';
 import * as headlineArticleStore from '../firestore-admin/headline-article';
 import * as newsArticleStore from '../firestore-admin/news-article';
-import { HeadlineArticle } from '../services/wikipedia-news/models/headline-articles';
 import {
   crawlNewsArticle,
   extractCrawlableArticles,
@@ -21,28 +19,25 @@ module.exports = functions
 
     // クローリング可能な記事の絞り込み
     const articles = await headlineArticleStore.findNoDetails(db);
-    const crawlableArticles = await extractCrawlableArticles(db, articles);
+    const crawlableArticles = extractCrawlableArticles(articles);
     console.log('crawlableArticles:' + crawlableArticles.length);
 
     // ニュース記事を取得する
     const newsArticles = [];
     for await (const crawlableArticle of crawlableArticles) {
       newsArticles.push(await crawlNewsArticle(db, crawlableArticle));
-      await sleep(500);
     }
     console.log('newsArticles:' + newsArticles.length);
     await newsArticleStore.bulkCreate(db, newsArticles);
 
     // hasDetailをtrueに更新する
-    const hasDetailArticles = (
-      await Promise.all(
-        newsArticles.map((newsArticle) => newsArticle.articleRef.get()),
-      )
-    ).map((article) => ({
-      ...(article.data() as HeadlineArticle),
-      hasDetail: true,
-    }));
-    await headlineArticleStore.bulkCreate(db, hasDetailArticles);
+    for await (const newsArticle of newsArticles) {
+      await headlineArticleStore.updateHasDetail(
+        db,
+        newsArticle.headlineArticle.id,
+        true,
+      );
+    }
 
     res.send('ok');
   });

@@ -35,16 +35,3 @@ export const findById = async (
 
   return result;
 };
-
-export const findPublisherRef = (
-  db: firestore.Firestore,
-  name: string,
-): firestore.DocumentReference<Publisher> => {
-  const ref = db
-    .collection(collectionName.publishers)
-    .doc(name) as firestore.DocumentReference<Publisher>;
-
-  if (!ref) throw new Error('publisher not found');
-
-  return ref;
-};

@@ -2,7 +2,7 @@ import { firestore } from 'firebase-admin';
 import { Article as GNArticle } from '../rakuten-rapid-api/models/google-news';
 import { HeadlineArticle } from './models/headline-articles';
 import { Publisher } from './models/publisher';
-import { findPublisherRef, findById } from '../../firestore-admin/publisher';
+import { findById } from '../../firestore-admin/publisher';
 
 export const toHeadlineArticles = async (
   gNArticles: GNArticle[],
@@ -11,14 +11,12 @@ export const toHeadlineArticles = async (
   const headlineArticles: HeadlineArticle[] = [];
 
   for (const gNArticle of gNArticles) {
-    const publisherRef = findPublisherRef(db, gNArticle.source.title);
     const publisher = await findById(db, gNArticle.source.title);
 
     headlineArticles.push({
       id: gNArticle.id,
       title: gNArticle.title,
       url: gNArticle.link,
-      publisherRef: publisherRef,
       publisher: publisher,
       hasDetail: false,
       createdAt: null,
