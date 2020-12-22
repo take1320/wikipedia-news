@@ -12,14 +12,14 @@ export const toHeadlineArticles = async (
 
   for (const gNArticle of gNArticles) {
     const publisherRef = findPublisherRef(db, gNArticle.source.title);
-    const testPublisher = await findById(db, gNArticle.source.title);
+    const publisher = await findById(db, gNArticle.source.title);
 
     headlineArticles.push({
       id: gNArticle.id,
       title: gNArticle.title,
       url: gNArticle.link,
       publisherRef: publisherRef,
-      testPublisher: testPublisher,
+      publisher: publisher,
       hasDetail: false,
       createdAt: null,
       updatedAt: null,
