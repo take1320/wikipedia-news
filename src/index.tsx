@@ -7,7 +7,6 @@ import './index.css';
 import 'semantic-ui-css/semantic.min.css';
 import App from './App';
 
-import { HogeContext } from 'contexts';
 import * as serviceWorker from './serviceWorker';
 import firebaseConfig from './firebase-config';
 import FirebaseApp from 'FirebaseApp';
@@ -18,9 +17,7 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <FirebaseApp>
-        <HogeContext.Provider value="piyo">
-          <App />
-        </HogeContext.Provider>
+        <App />
       </FirebaseApp>
     </BrowserRouter>
   </React.StrictMode>,
