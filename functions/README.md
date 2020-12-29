@@ -1,6 +1,10 @@
-# wikipedia-news functions
+# ウィキペディア in News (バックエンド)
 
-Cloud Functions処理
+フロントエンド側に表示するニュース記事・ウィキペディア記事を準備するための処理です。
+
+Cloud Functionsを定期実行することで最新記事を取得しCloud Firestoreに保存します。
+
+## バックエンドについて
 
 ### ローカル環境の設定方法
 
