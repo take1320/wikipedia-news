@@ -45,7 +45,7 @@ config の取得
 
       yarn serve
 
--   リクエストの動作確認
+-   リクエストの動作確認<br>※POSTMANの設定を`docs/postman/*`に配置しているのでimportをすると楽です。
 
     <http://localhost:5000/wikipedia-news/asia-northeast1/fetchHeadlines>
 
