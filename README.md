@@ -1,12 +1,22 @@
-# wikipedia-news
+# ウィキペディア in News
 
-ニュース記事から Wikipedia 記事を抽出する
+最新のニュースに関連するウィキペディア記事を見ることができるアプリケーションです。
 
-## Functions について
+## 構成
 
-Comming soon...
+| 項目      | 詳細                                               |
+| ------- | ------------------------------------------------ |
+| DB      | Firebase Cloud Firestore                         |
+| バックエンド  | Firebase Cloud Functions,<br>Node.js(Typescript) |
+| フロントエンド | Firebase Hosting,<br>React.js(Typescript)        |
 
-## Clientアプリ について
+基本的にはCloud Functionsが定期処理で取得したニュース情報・ウィキペディア情報をCloud Firestoreに保存し、ReactからCloud Firestore経由で記事を参照することができるという動きになります。
+
+## バックエンドについて
+
+[こちら](./functions/README.md) に記述しています
+
+## フロントエンドについて
 
 ### ローカル環境の設定方法
 

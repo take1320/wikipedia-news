@@ -1,6 +1,10 @@
-# wikipedia-news functions
+# ウィキペディア in News (バックエンド)
 
-Cloud Functions処理
+フロントエンド側に表示するニュース記事・ウィキペディア記事を準備するための処理です。
+
+Cloud Functionsを定期実行することで最新記事を取得しCloud Firestoreに保存します。
+
+## バックエンドについて
 
 ### ローカル環境の設定方法
 
@@ -41,7 +45,7 @@ config の取得
 
       yarn serve
 
--   リクエストの動作確認
+-   リクエストの動作確認<br>※POSTMANの設定を`docs/postman/*`に配置しているのでimportをすると楽です。
 
     <http://localhost:5000/wikipedia-news/asia-northeast1/fetchHeadlines>
 
