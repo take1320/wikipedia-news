@@ -3,10 +3,25 @@ import { List, Label } from 'semantic-ui-react';
 import styled from '@emotion/styled';
 
 import { ArticleWord } from 'services/wikipedia-news/models/article-word';
+import sleep from '../../../utils/await-sleep';
 
 const ArticleWordWrapper = styled.div`
   margin: 0.5rem 0;
 `;
+
+const openTabHandler = (url: string): ((e: React.MouseEvent) => void) => {
+  return (e: React.MouseEvent) => {
+    e.preventDefault();
+    // TODO: sleepはfirestore更新処理に変更
+    sleep(1000)
+      .then(() => {
+        console.log('url:' + url);
+      })
+      .finally(() => {
+        window.open(url, '_blank', 'noopener');
+      });
+  };
+};
 
 const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => (
   <ArticleWordWrapper>
@@ -14,9 +29,10 @@ const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => (
       <List.Content>
         <List.Header>
           <a
-            href={articleWord.url ?? undefined}
+            href="#"
             rel="noopener noreferrer"
             target="_blank"
+            onClick={openTabHandler(articleWord.url ?? '')}
           >
             {articleWord.title}
           </a>
