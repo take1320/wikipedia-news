@@ -20,6 +20,7 @@ export const writeUser = async (
     const name = '匿名ユーザ';
     const user: User = {
       ...blankUser,
+      id,
       name,
     };
 

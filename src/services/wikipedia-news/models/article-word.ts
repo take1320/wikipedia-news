@@ -5,6 +5,7 @@ export type ArticleWord = {
   newsArticleId: string;
   title: string | null;
   url: string | null;
+  referencedCount: number | 0;
   length: number | null;
   summary: string | null;
   isAssociated: boolean;
