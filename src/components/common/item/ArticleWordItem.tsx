@@ -1,24 +1,37 @@
-import React, { FC, useContext } from 'react';
+import React, { FC, useContext, useRef } from 'react';
 import { List, Label } from 'semantic-ui-react';
 import styled from '@emotion/styled';
 
 import { User } from 'services/wikipedia-news/models/user';
 import { ArticleWord } from 'services/wikipedia-news/models/article-word';
-import { UserContext } from '../../../contexts';
-import useReferenceArticleWord from 'hooks/use-reference-article-wrods';
+import { updateReferencedWikipediaArticle } from 'services/wikipedia-news/referenced-wikipedia-articles';
+
+import { UserContext, FirebaseContext } from '../../../contexts';
 
 const ArticleWordWrapper = styled.div`
   margin: 0.5rem 0;
 `;
 
 const openTabHandler = (
+  db: any,
   user: User,
-  articleWordId: string,
+  newsArticleId: string,
+  wordTitle: string,
   url: string,
 ): ((e: React.MouseEvent) => void) => {
   return (e: React.MouseEvent) => {
     e.preventDefault();
     console.log('test:' + url);
+
+    updateReferencedWikipediaArticle(
+      db,
+      user.id,
+      newsArticleId,
+      wordTitle,
+    ).then(() => {
+      console.log('then desuyo');
+    });
+
     // TODO: sleepはfirestore更新処理に変更
     // clickWikipediaWord(user, articleWordId)
     //   .then(() => {
@@ -32,8 +45,10 @@ const openTabHandler = (
 };
 
 const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
+  const { current } = useRef(useContext(FirebaseContext));
   const { user, referencedWikipediaArticles } = useContext(UserContext);
   if (!user) throw new Error('user is null');
+  const { db } = current;
 
   console.log('user:' + user.id);
   for (const ref of referencedWikipediaArticles) {
@@ -42,12 +57,6 @@ const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
 
   const isReferenced = referencedWikipediaArticles.some(
     (r) => r.id === articleWord.title,
-  );
-
-  const { loading, error } = useReferenceArticleWord(
-    articleWord.newsArticleId,
-    articleWord.title ?? '',
-    articleWord.url ?? '',
   );
 
   return (
@@ -60,8 +69,10 @@ const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
               rel="noopener noreferrer"
               target="_blank"
               onClick={openTabHandler(
+                db,
                 user,
-                articleWord.id,
+                articleWord.newsArticleId,
+                articleWord.title ?? '',
                 articleWord.url ?? '',
               )}
             >
