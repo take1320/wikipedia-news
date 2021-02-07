@@ -5,8 +5,7 @@ import styled from '@emotion/styled';
 import { User } from 'services/wikipedia-news/models/user';
 import { ArticleWord } from 'services/wikipedia-news/models/article-word';
 import * as newsArticleService from 'services/wikipedia-news/news-article';
-
-import { UserContext } from '../../../contexts';
+import { UserContext } from 'contexts';
 
 const ArticleWordWrapper = styled.div`
   margin: 0.5rem 0;
@@ -30,12 +29,12 @@ const openTabHandler = (
       return;
     }
 
+    window.open(url, '_blank', 'noopener');
     newsArticleService
       .referenceArticleWord(newsArticleId, articleWordId, user.id)
       .then(() => {
         setReferenced(true);
         referenceCountDispatch('increment');
-        window.open(url, '_blank', 'noopener');
       });
   };
 };
@@ -53,7 +52,6 @@ const referenceCountReducer = (countState: number, action: string) => {
 
 const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
   const { user, referencedWikipediaArticles } = useContext(UserContext);
-  if (!user) throw new Error('user is null');
 
   const [isReferenced, setReferenced] = useState<boolean>(
     referencedWikipediaArticles.some((r) => r.id === articleWord.title),
@@ -62,6 +60,8 @@ const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
     referenceCountReducer,
     articleWord.referencedCount ?? 0,
   );
+
+  if (!user) return <div></div>;
 
   return (
     <ArticleWordWrapper>
