@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { User } from 'services/wikipedia-news/models/user';
 import { ArticleWord } from 'services/wikipedia-news/models/article-word';
-import { updateReferencedWikipediaArticle } from 'services/wikipedia-news/referenced-wikipedia-articles';
+import * as newsArticleService from 'services/wikipedia-news/news-article';
 
 import { UserContext, FirebaseContext } from '../../../contexts';
 
@@ -22,15 +22,11 @@ const openTabHandler = (
   return (e: React.MouseEvent) => {
     e.preventDefault();
     console.log('test:' + url);
-
-    updateReferencedWikipediaArticle(
-      db,
-      user.id,
-      newsArticleId,
-      wordTitle,
-    ).then(() => {
-      console.log('then desuyo');
-    });
+    newsArticleService
+      .referenceArticleWord(newsArticleId, wordTitle, user.id)
+      .then(() => {
+        console.log('then desuyo');
+      });
 
     // TODO: sleepはfirestore更新処理に変更
     // clickWikipediaWord(user, articleWordId)

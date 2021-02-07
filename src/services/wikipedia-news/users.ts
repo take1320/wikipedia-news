@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 
 import { User, blankUser } from './models/user';
 import { collectionName } from './constants';
+import * as referencedWikipediaArticleRepository from 'repositories/referenced-wikipedia-article';
 
 export const writeUser = async (
   db: firebase.firestore.Firestore,
@@ -50,4 +51,11 @@ export const findUser = async (
   }
 
   return theUser;
+};
+
+export const referenceWikipedia = async (
+  userId: string,
+  wikipediaArticleId: string,
+): Promise<void> => {
+  await referencedWikipediaArticleRepository.create(userId, wikipediaArticleId);
 };
