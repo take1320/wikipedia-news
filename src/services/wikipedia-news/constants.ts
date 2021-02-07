@@ -7,4 +7,6 @@ export const collectionName = {
   wikipediaArticles: 'wikipediaArticles',
   publishers: 'publishers',
   users: 'users',
+  referencedWikipediaArticles: 'referencedWikipediaArticles',
+  referencedUsers: 'referencedUsers',
 } as const;

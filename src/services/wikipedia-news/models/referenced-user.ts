@@ -1,15 +1,13 @@
 import { firestore } from 'firebase/app';
 
-export type User = {
+export type ReferencedUser = {
   id: string;
-  name: string;
   createdAt: firestore.Timestamp | null;
   updatedAt: firestore.Timestamp | null;
 };
 
-export const blankUser: User = {
+export const blankReferencedUser: ReferencedUser = {
   id: '',
-  name: '',
   createdAt: null,
   updatedAt: null,
 };

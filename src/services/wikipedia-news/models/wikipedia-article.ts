@@ -5,6 +5,7 @@ export type WikipediaArticle = {
   title: string | null;
   url: string | null;
   length: number | null;
+  referencedCount: number | 0;
   summary: string | null;
   isSearched: boolean;
   createdAt: firestore.Timestamp | null;
