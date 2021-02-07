@@ -14,3 +14,20 @@ export const findById = async (id: string): Promise<WikipediaArticle> => {
 
   return model;
 };
+
+export const update = async (
+  value: Partial<WikipediaArticle>,
+): Promise<void> => {
+  if (!value.id) throw new Error();
+  const current = await findById(value.id);
+
+  const db = firebase.firestore();
+  await db
+    .collection(collectionName.wikipediaArticles)
+    .doc(value.id)
+    .set({
+      ...current,
+      ...value,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    } as WikipediaArticle);
+};

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useRef } from 'react';
+import React, { FC, useContext, useState, useReducer } from 'react';
 import { List, Label } from 'semantic-ui-react';
 import styled from '@emotion/styled';
 
@@ -6,53 +6,61 @@ import { User } from 'services/wikipedia-news/models/user';
 import { ArticleWord } from 'services/wikipedia-news/models/article-word';
 import * as newsArticleService from 'services/wikipedia-news/news-article';
 
-import { UserContext, FirebaseContext } from '../../../contexts';
+import { UserContext } from '../../../contexts';
 
 const ArticleWordWrapper = styled.div`
   margin: 0.5rem 0;
 `;
 
 const openTabHandler = (
-  db: any,
   user: User,
   newsArticleId: string,
-  wordTitle: string,
+  articleWordId: string,
   url: string,
+  isReferenced: boolean,
+  setReferenced: React.Dispatch<React.SetStateAction<boolean>>,
+  referenceCountDispatch: React.Dispatch<string>,
 ): ((e: React.MouseEvent) => void) => {
   return (e: React.MouseEvent) => {
     e.preventDefault();
-    console.log('test:' + url);
-    newsArticleService
-      .referenceArticleWord(newsArticleId, wordTitle, user.id)
-      .then(() => {
-        console.log('then desuyo');
-      });
 
-    // TODO: sleepはfirestore更新処理に変更
-    // clickWikipediaWord(user, articleWordId)
-    //   .then(() => {
-    //     console.log('id:' + articleWordId);
-    //     console.log('url:' + url);
-    //   })
-    //   .finally(() => {
-    //     window.open(url, '_blank', 'noopener');
-    //   });
+    // 参照済みの場合は記録しない
+    if (isReferenced) {
+      window.open(url, '_blank', 'noopener');
+      return;
+    }
+
+    newsArticleService
+      .referenceArticleWord(newsArticleId, articleWordId, user.id)
+      .then(() => {
+        setReferenced(true);
+        referenceCountDispatch('increment');
+        window.open(url, '_blank', 'noopener');
+      });
   };
 };
 
+const referenceCountReducer = (countState: number, action: string) => {
+  switch (action) {
+    case 'increment':
+      return countState + 1;
+    case 'decrement':
+      return countState - 1;
+    default:
+      return countState;
+  }
+};
+
 const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
-  const { current } = useRef(useContext(FirebaseContext));
   const { user, referencedWikipediaArticles } = useContext(UserContext);
   if (!user) throw new Error('user is null');
-  const { db } = current;
 
-  console.log('user:' + user.id);
-  for (const ref of referencedWikipediaArticles) {
-    console.log('ref:' + ref.id);
-  }
-
-  const isReferenced = referencedWikipediaArticles.some(
-    (r) => r.id === articleWord.title,
+  const [isReferenced, setReferenced] = useState<boolean>(
+    referencedWikipediaArticles.some((r) => r.id === articleWord.title),
+  );
+  const [referenceCount, referenceCountDispatch] = useReducer(
+    referenceCountReducer,
+    articleWord.referencedCount ?? 0,
   );
 
   return (
@@ -65,11 +73,13 @@ const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
               rel="noopener noreferrer"
               target="_blank"
               onClick={openTabHandler(
-                db,
                 user,
                 articleWord.newsArticleId,
-                articleWord.title ?? '',
+                articleWord.id,
                 articleWord.url ?? '',
+                isReferenced,
+                setReferenced,
+                referenceCountDispatch,
               )}
             >
               {articleWord.title}
@@ -78,7 +88,7 @@ const ArticleWordItem: FC<{ articleWord: ArticleWord }> = ({ articleWord }) => {
           <List.Description>
             <Label
               as="span"
-              content={articleWord.referencedCount?.toLocaleString()}
+              content={referenceCount.toLocaleString()}
               icon="eye"
               color={isReferenced ? 'red' : undefined}
             />

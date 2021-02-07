@@ -20,3 +20,39 @@ export const findByNewsArticleIdAndArticleWordId = async (
 
   return model;
 };
+
+export const findById = async (id: string): Promise<ArticleWord[]> => {
+  const db = firebase.firestore();
+
+  const snap = await db
+    .collectionGroup(collectionName.articleWords)
+    .where('id', '==', id)
+    .get();
+
+  const articleWords: ArticleWord[] = [];
+  snap.forEach((doc) => {
+    articleWords.push(doc.data() as ArticleWord);
+  });
+
+  console.log('findbyid[');
+  console.log(JSON.stringify(articleWords));
+  console.log('findbyid]');
+
+  return articleWords;
+};
+
+export const updateCollectionGroup = async (
+  value: Partial<ArticleWord>,
+): Promise<void> => {
+  if (!value.id) throw new Error();
+  const db = firebase.firestore();
+
+  const snap = await db
+    .collectionGroup(collectionName.articleWords)
+    .where('id', '==', value.id)
+    .get();
+
+  snap.forEach((doc) => {
+    doc.ref.update({ ...value });
+  });
+};

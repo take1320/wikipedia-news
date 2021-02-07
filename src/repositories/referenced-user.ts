@@ -41,3 +41,17 @@ export const createViaWikipediaArticle = async (
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   } as ReferencedUser);
 };
+
+export const countByWikipediaArticleIdViaWikipediaArticle = async (
+  wikipediaArticleId: string,
+): Promise<number> => {
+  const db = firebase.firestore();
+
+  const snap = await db
+    .collection(collectionName.wikipediaArticles)
+    .doc(wikipediaArticleId)
+    .collection(collectionName.referencedUsers)
+    .get();
+
+  return snap.size;
+};
